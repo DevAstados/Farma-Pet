@@ -1,3 +1,10 @@
+body {
+    margin: 0;
+    font-size: 100%;
+    background: #fff;
+    font-family: 'Open Sans', sans-serif;
+}
+
 /*-- logo --*/
 
 .logo_agile h1 a {
@@ -67,4 +74,12 @@ navbar-nav mr-auto sidenav {
     .navbar-expand-lg .sidenav {
         flex-direction: column;
     }
+}
+
+
+.conteudo{
+    width: 80%;
+    height: 100%;
+    top: 500px;
+
 }

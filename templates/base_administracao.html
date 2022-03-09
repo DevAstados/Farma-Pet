@@ -88,7 +88,7 @@
         <a class="nav-link" href="#">Gerenciar Pedido</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Gerenciar Produto</a>
+        <a class="nav-link" href="{% url 'listagem_produto' %}">Gerenciar Produto</a>
       </li>
      <li class="nav-item">
         <a class="nav-link" href="#">Gerenciar Funcionário</a>
@@ -104,8 +104,12 @@
   </div>
 </nav>
     <!-- //navigation -->
-    {% block conteudo %}
+    <div class="conteudo">
+        {% block conteudo %}
+
     {% endblock conteudo %}
+    </div>
+
     {% block script %}
 
         <!-- js-files -->

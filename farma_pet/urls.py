@@ -20,13 +20,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from farma_pet import views
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('login/', views.login, name='login'),
-                  path('logout/', views.Logout, name='logout'),
-                  path('administracao/', views.administracao, name='administracao'),
+
+                  path('administracao/', include('administracao.urls')),
                   path('__debug__/', include(debug_toolbar.urls)),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
