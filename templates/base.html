@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block titulo %} Silpan  {% endblock titulo %}</title>
+
+</head>
+<body>
+
+{% include 'parciais/_menu.html' %}
+<main>
+    {% block conteudo %}
+
+    {% endblock conteudo %}
+</main>
+
+{% include 'parciais/_footer.html' %}
+
+
+{% block scripts %}
+
+{% endblock scripts %}
+</body>
+</html>

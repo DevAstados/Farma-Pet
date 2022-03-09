@@ -1,0 +1,70 @@
+/*-- logo --*/
+
+.logo_agile h1 a {
+    color: #f62325;
+    font-size: 38px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.logo_agile h1 a:hover {
+    text-decoration: none;
+}
+
+.logo_agile h1 a img {
+    position: absolute;
+    left: -40%;
+    top: -23px;
+}
+
+.logo_agile {
+    padding: 10px 0 21px;
+}
+
+/*-- //logo --*/
+
+.nav-link:hover {
+  transition: all 0.4s;
+}
+navbar-nav mr-auto sidenav {
+
+
+}
+.nav-link-collapse:after {
+  float: right;
+  content: '\f067';
+  font-family: 'FontAwesome';
+}
+
+.nav-link-show:after {
+  float: right;
+  content: '\f068';
+  font-family: 'FontAwesome';
+}
+
+.nav-item ul.nav-second-level {
+  padding-left: 0;
+}
+
+.nav-item ul.nav-second-level > .nav-item {
+  padding-left: 20px;
+}
+
+@media (min-width: 992px) {
+    .sidenav {
+        position: absolute;
+        top: 36px;
+        left: 0;
+        width: 230px;
+        height: calc(100vh - 3.5rem);
+        margin-top: 3.5rem;
+        background: #343a40;
+        box-sizing: border-box;
+        border-top: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar-expand-lg .sidenav {
+        flex-direction: column;
+    }
+}
