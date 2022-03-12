@@ -1,0 +1,10 @@
+asgiref==3.5.0
+Django==4.0.3
+django-autoslug==1.9.8
+django-crispy-forms==1.14.0
+django-debug-toolbar==3.2.4
+django-stdimage==5.3.0
+mysqlclient==2.1.0
+Pillow==9.0.1
+sqlparse==0.4.2
+tzdata==2021.5

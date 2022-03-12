@@ -32,38 +32,40 @@ body {
 /*-- //logo --*/
 
 .nav-link:hover {
-  transition: all 0.4s;
+    transition: all 0.4s;
 }
+
 navbar-nav mr-auto sidenav {
 
 
 }
+
 .nav-link-collapse:after {
-  float: right;
-  content: '\f067';
-  font-family: 'FontAwesome';
+    float: right;
+    content: '\f067';
+    font-family: 'FontAwesome';
 }
 
 .nav-link-show:after {
-  float: right;
-  content: '\f068';
-  font-family: 'FontAwesome';
+    float: right;
+    content: '\f068';
+    font-family: 'FontAwesome';
 }
 
 .nav-item ul.nav-second-level {
-  padding-left: 0;
+    padding-left: 0;
 }
 
 .nav-item ul.nav-second-level > .nav-item {
-  padding-left: 20px;
+    padding-left: 20px;
 }
 
 @media (min-width: 992px) {
     .sidenav {
         position: absolute;
-        top: 36px;
+        top: 41px;
         left: 0;
-        width: 230px;
+        width: 12%;
         height: calc(100vh - 3.5rem);
         margin-top: 3.5rem;
         background: #343a40;
@@ -77,9 +79,18 @@ navbar-nav mr-auto sidenav {
 }
 
 
-.conteudo{
-    width: 80%;
+.conteudo {
+    position: fixed;
+    width: 83%;
     height: 100%;
-    top: 500px;
+    top: 130px;
+    left: 15%;
+
+}
+
+.table-listagem-produto {
+    position: relative;
+    top: 20px;
+    border-collapse: collapse;
 
 }
