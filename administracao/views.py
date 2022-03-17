@@ -6,11 +6,51 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView
 
+from funcionario.models import Funcionario
 from produto.models import Produto
 
 
 class listagem_produto(ListView):
     template_name = 'listagem_produtos.html'
+
+    def get_queryset(self):
+        self.produtos = Produto.objects.all()
+
+        return self.produtos
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+class listagem_funcionario(ListView):
+    template_name = 'listagem_funcionario.html'
+
+    def get_queryset(self):
+        self.funcionario = Funcionario.objects.all()
+
+        return self.funcionario
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+class listagem_cliente(ListView):
+    template_name = 'listagem_cliente.html'
+
+    def get_queryset(self):
+        self.produtos = Produto.objects.all()
+
+        return self.produtos
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+class listagem_pedido(ListView):
+    template_name = 'listagem_pedido.html'
 
     def get_queryset(self):
         self.produtos = Produto.objects.all()

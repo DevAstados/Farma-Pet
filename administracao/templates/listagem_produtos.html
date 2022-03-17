@@ -1,5 +1,5 @@
 {% extends 'base_administracao.html' %}
-
+{% load omFilters %}
 
 
 {% block conteudo %}
@@ -15,19 +15,19 @@
             <th scope="col" style="width:30%">Nome</th>
             <th scope="col">Qtd</th>
             <th scope="col">Preço Atual</th>
-            <th scope="col" colspan="2" style="text-align: center , ">Editação</th>
+            <th scope="col" colspan="2" style="text-align: center   ">Editação</th>
         </tr>
 
         {% for produto in object_list %}
             <tr>
-                <td>{{ produto.id }}</td>
+                <td>{{ produto.id|formata_codigo_produto}}</td>
                 <td>{{ produto.nome }}</td>
                 <td>{{ produto.quantidade }}</td>
                 <td>
                     {% if produto.preco_promocional %}
-                        {{ produto.preco_promocional }}
+                        {{ produto.preco_promocional|formata_preco }}
                     {% else %}
-                        {{ produto.preco }}
+                        {{ produto.preco|formata_preco }}
                     {% endif %}
                 </td>
                 <td>

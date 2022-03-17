@@ -8,7 +8,10 @@ urlpatterns = [
                   path('login/', views.login, name='login'),
                   path('logout/', views.Logout, name='logout'),
                   path('', views.administracao, name='administracao'),
-                  path('listagemProduto', views.listagem_produto.as_view(), name='listagem_produto'),
+                  path('listagemProduto/', views.listagem_produto.as_view(), name='listagem_produto'),
+                  path('listagemFuncionario/', views.listagem_funcionario.as_view(), name='listagem_funcionario'),
+                  path('listagemPedido/', views.listagem_pedido.as_view(), name='listagem_pedido'),
+                  path('listagemCliente/', views.listagem_cliente.as_view(), name='listagem_cliente'),
                   path('deletarProduto/<id>', views.excluirProduto, name='deletar_produto'),
                   path('alteraProduto/<id>', views.alterar_produto.as_view(), name='alterar_produto'),
 
