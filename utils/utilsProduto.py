@@ -7,3 +7,6 @@ def formata_numero_pedido(val):
 
 def formata_codigo_produto(val):
     return f'{str(val).zfill(5)}'
+
+def formata_cpf(val):
+    return f'{str(val).zfill(5)}'
