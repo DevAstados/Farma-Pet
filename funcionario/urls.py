@@ -1,12 +1,12 @@
-import debug_toolbar
-from django.contrib.auth.decorators import login_required
-from django.urls import path, include
-
-from django.conf import settings
-from . import views
-from django.conf.urls.static import static
+from django.urls import path
+from funcionario.views import FuncionarioCreate, FuncionarioUpdate, FuncionarioDelete
 
 urlpatterns = [
 
+     path('cadastrar/funcionario/', FuncionarioCreate.as_view(), name='cadastrar-funcionario'),
+     path('editar/funcionario/<int:pk>/', FuncionarioUpdate.as_view(), name='editar-funcionario'),
+     path('excluir/funcionario/<int:pk>/', FuncionarioDelete.as_view(), name='excluir-funcionario'),
 
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+              ]

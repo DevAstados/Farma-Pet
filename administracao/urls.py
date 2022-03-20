@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
+
 from administracao import views
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
                   path('listagemCliente/', views.listagem_cliente.as_view(), name='listagem_cliente'),
                   path('deletarProduto/<id>', views.excluirProduto, name='deletar_produto'),
                   path('alteraProduto/<id>', views.alterar_produto.as_view(), name='alterar_produto'),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
