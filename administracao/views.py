@@ -12,6 +12,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from funcionario.models import Funcionario
 from produto.forms import FormProduto
 from produto.models import Produto, Categoria, Marca, Especificacoes
+from usuario.models import Usuario
 
 
 class listagem_produto(ListView):
@@ -111,6 +112,26 @@ class adicionar_produto(CreateView):
 
         return redirect('listagem_produto')
 
+class adicionar_funcionario(CreateView):
+    template_name = 'adicionar_funcionario.html'
+
+    def get(self, request, *args, **kwargs):
+        template_name = 'adicionar_funcionario.html'
+        context = {}
+
+        return render(request, template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
+        requestJson = json.loads(requestJson)
+        usuario = Usuario.popular(requestJson)
+
+        funcionario = Funcionario.popular(requestJson,usuario)
+        Usuario.save(usuario)
+        Funcionario.save(funcionario)
+
+        return redirect('listagem_funcionario')
+
 
 class update_produto(View):
     template_name = 'alterar_produto.html'
@@ -138,6 +159,28 @@ class update_produto(View):
 
         return redirect('listagem_produto')
 
+class update_funcionario(View):
+
+    def get(self, request, *args, **kwargs):
+        template_name = 'alterar_funcionario.html'
+        context = {}
+        context['funcionario'] = get_object_or_404(Funcionario, pk=self.kwargs['id'])
+
+        return render(request, template_name, context=context)
+    def post(self, request, *args, **kwargs):
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
+        requestJson = json.loads(requestJson)
+
+        funcionario = get_object_or_404(Funcionario, pk=self.kwargs['id'])
+        usuario = get_object_or_404(Usuario, pk=funcionario.usuario.pk)
+
+        funcionario = Funcionario.popularAlteracao(requestJson, funcionario)
+        usuario = Usuario.popularalteracao(requestJson,usuario)
+        Usuario.save(usuario)
+        Funcionario.save(funcionario)
+
+        return redirect('listagem_funcionario')
+
 
 def administracao(request):
     if request.method == 'GET':
@@ -151,6 +194,12 @@ def excluirProduto(request, id):
         get_object_or_404(Produto, pk=id).delete()
         return redirect('listagem_produto')
 
+def excluirFuncionario(request, id):
+    if request.method == 'GET':
+        funcionario = get_object_or_404(Funcionario, pk=id)
+        get_object_or_404(Usuario, pk=funcionario.usuario.pk).delete()
+        funcionario.delete()
+        return redirect('listagem_funcionario')
 
 def login(request):
     pass

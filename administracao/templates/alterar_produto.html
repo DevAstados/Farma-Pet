@@ -48,7 +48,7 @@
         <div class="form-group row">
             <label for="categoria" class="col-4 col-form-label">Categoria</label>
             <div class="col-5">
-                <input id="categoria-nome" name="categoria-nome" type="text" class="form-control" value="{{ produto.nome }}"readonly>
+                <input id="categoria-nome" name="categoria-nome" type="text" class="form-control" value="{{ produto.categoria.nome }}"readonly>
 
                 <select id="categoria-select" name="categoria-select" class="custom-select" style="display: none">
                     {% for categoria in categorias %}

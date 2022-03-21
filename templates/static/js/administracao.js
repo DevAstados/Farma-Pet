@@ -36,6 +36,8 @@ function onClickNovaMarca(element) {
         $(".toggle-control-marca-cancel").hide();
     }
 }
+
+
 function onClickAlterarCategoriaMarca(element) {
     if (element == 'toggle-control-marca') {
         $("#marca-nome").show();

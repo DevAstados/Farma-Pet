@@ -4,7 +4,7 @@
 
 {% block conteudo %}
 
-    <form>
+    <form action="{% url 'adiciona_funcionario' %}">
 
         <input type="submit" value="Adicionar">
     </form>
@@ -13,7 +13,7 @@
         <tr>
             <th scope="col" style="width:30px">Funcional</th>
             <th scope="col" style="width:30%">Nome</th>
-            <th scope="col" style="width:80px">usuario</th>
+            <th scope="col" style="width:600px">usuario</th>
             <th scope="col" colspan="2" style="text-align: center ">Editação</th>
         </tr>
 
@@ -21,15 +21,15 @@
             <tr>
                 <td>{{ funcionario.id }}</td>
                 <td>{{ funcionario.nome }}</td>
-                <td>Login</td>
-                <td>
-                    <form action="{% url 'alterar_produto' funcionario.id %}" method="get">
+                <td>{{ funcionario.usuario.login }}</td>
+                <td style="left: 50px">
+                    <form action="{% url 'alterar_funcionario' funcionario.id %}" method="get">
                         <input type="submit" value="Alterar">
                     </form>
 
                 </td>
                 <td>
-                    <form action="{% url 'deletar_produto' funcionario.id %}" method="get">
+                    <form action="{% url 'deletar_funcionario' funcionario.id %}" method="get">
                         <input type="submit" value="deletar">
                     </form>
                 </td>
