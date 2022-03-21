@@ -1,4 +1,8 @@
+{% extends 'base_administracao.html' %}
+
+
 {% load static %}
+{% block conteudo %}
     <div class="row container">
     <form id="form_toggle" action="/produtos/categoria/adicionar" method="post" class="d-none p-0" novalidate>
         {% csrf_token %}
@@ -95,3 +99,4 @@
             <input class="btn btn-secondary" type="reset" onclick="resetar_imagem()" value="Resetar" />
         </div>
     </form>
+{% endblock conteudo %}

@@ -63,7 +63,7 @@ navbar-nav mr-auto sidenav {
 @media (min-width: 992px) {
     .sidenav {
         position: absolute;
-        top: 41px;
+        top: 45px;
         left: 0;
         width: 12%;
         height: calc(100vh - 3.5rem);
@@ -80,7 +80,7 @@ navbar-nav mr-auto sidenav {
 
 
 .conteudo {
-    position: fixed;
+    position: relative;
     width: 83%;
     height: 100%;
     top: 130px;

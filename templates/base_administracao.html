@@ -26,8 +26,7 @@
 
     <link href="{% static 'css/administracao.css' %}" rel="stylesheet" type="text/css" media="all"/>
     <!-- menu style -->
-    <!-- //Custom-Files -->
-        <script src="{% static 'js/administracao .js' %} "></script>
+
 
     <!-- web fonts -->
     <link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&amp;subset=latin-ext"
@@ -41,85 +40,86 @@
 <body>
 
 
+<!-- //top-header -->
 
-    <!-- //top-header -->
-
-    <!-- header-bottom-->
-    <div class="header-bot">
-        <div class="container">
-            <div class="row header-bot_inner_wthreeinfo_header_mid">
+<!-- header-bottom-->
+<div class="header-bot">
+    <div class="container">
+        <div class="row header-bot_inner_wthreeinfo_header_mid">
 
 
-            </div>
         </div>
     </div>
-    <!-- shop locator (popup) -->
-    <!-- //header-bottom -->
-    <!-- navigation -->
-   <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-                       <!-- logo -->
-                <div class="col-md-2 logo_agile">
-                    <h1 class="text-center">
-                        <a href="" class="font-weight-bold font-italic">
-                            <header alt=" " class="img-fluid">&nbsp;&nbsp;&nbsp;Farma Pet</header>
-                        </a>
-                    </h1>
-                </div>
-                <!-- //logo -->
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarCollapse"
-    aria-controls="navbarCollapse"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
+</div>
+<!-- shop locator (popup) -->
+<!-- //header-bottom -->
+<!-- navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <!-- logo -->
+    <div class="col-md-2 logo_agile">
+        <h1 class="text-center">
+            <a href="" class="font-weight-bold font-italic">
+                <header alt=" " class="img-fluid">&nbsp;&nbsp;&nbsp;Farma Pet</header>
+            </a>
+        </h1>
+    </div>
+    <!-- //logo -->
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <ul class="navbar-nav mr-auto sidenav" id="navAccordion">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'listagem_pedido' %}">Gerenciar Pedido</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'listagem_produto' %}">Gerenciar Produto</a>
-      </li>
-     <li class="nav-item">
-        <a class="nav-link" href="{% url 'listagem_funcionario' %}">Gerenciar Funcionário</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'listagem_cliente' %}">Gerenciar Cliente</a>
-      </li>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto sidenav" id="navAccordion">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'listagem_pedido' %}">Gerenciar Pedido</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'listagem_produto' %}">Gerenciar Produto</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'listagem_funcionario' %}">Gerenciar Funcionário</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'listagem_cliente' %}">Gerenciar Cliente</a>
+            </li>
 
-    </ul>
-    <form class="form-inline ml-auto mt-2 mt-md-0" action="{% url 'logout' %}">
-      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Sair</button>
-    </form>
-  </div>
+        </ul>
+        <form class="form-inline ml-auto mt-2 mt-md-0" action="{% url 'logout' %}">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Sair</button>
+        </form>
+    </div>
 </nav>
-    <!-- //navigation -->
-    <div class="conteudo">
-        {% block conteudo %}
+<!-- //navigation -->
+<div class="conteudo">
+    {% block conteudo %}
 
     {% endblock conteudo %}
-    </div>
+</div>
 
-    {% block script %}
+{% block script %}
 
-        <!-- js-files -->
-        <!-- jquery -->
-        <script src="{% static 'js/jquery-2.2.3.min.js ' %}"></script>
-        <!-- //jquery -->
+    <!-- js-files -->
+  <!-- jquery -->
+    <script src="{% static 'js/jquery-2.2.3.min.js ' %}"></script>
+    <!-- //jquery -->
+    <!-- //Custom-Files -->
+    <script src="{% static 'js/administracao.js' %} "></script>
 
-        <!-- for bootstrap working -->
-        <script src="{% static 'js/bootstrap.js' %} "></script>
-        <!-- //for bootstrap working -->
-    {% endblock script %}
+    <!-- for bootstrap working -->
+    <script src="{% static 'js/bootstrap.js' %} "></script>
+    <!-- //for bootstrap working -->
+{% endblock script %}
 
 </body>
 </html>

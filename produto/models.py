@@ -9,22 +9,48 @@ from stdimage import StdImageField
 class Categoria(models.Model):
     nome = models.CharField(max_length=30)
 
+    @classmethod
+    def popular(cls, nome):
+        cat = Categoria()
+        cat.nome = nome
+        return cat
+
 
 class Marca(models.Model):
     nome = models.CharField(max_length=50)
 
+    @classmethod
+    def popular(cls, nome):
+        cat = Marca()
+        cat.nome = nome
+        return cat
+
 
 class Especificacoes(models.Model):
-    indicacao = models.CharField(max_length=30)
-    raca = models.CharField(max_length=30)
-    porte = models.CharField(max_length=30)
-    idade = models.CharField(max_length=30)
-    composicao = models.CharField(max_length=350)
-    cor = models.CharField(max_length=350)
-    fragrancia = models.CharField(max_length=20)
-    peso = models.CharField(max_length=6)
-    frequencia_recomendada = models.IntegerField()
-    dimensoes = models.TextField()
+    indicacao = models.CharField(max_length=30, blank=True, null=True)
+    raca = models.CharField(max_length=30, blank=True, null=True)
+    porte = models.CharField(max_length=30, blank=True, null=True)
+    idade = models.CharField(max_length=30, blank=True, null=True)
+    composicao = models.CharField(max_length=350, blank=True, null=True)
+    cor = models.CharField(max_length=350, blank=True, null=True)
+    fragrancia = models.CharField(max_length=20, blank=True, null=True)
+    peso = models.FloatField(max_length=6, blank=True, null=True)
+    frequencia_recomendada = models.IntegerField(blank=True, null=True)
+    dimensoes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def popular(cls, json, categoria=None, marca=None):
+        especificacoes = Especificacoes()
+        especificacoes.indicacao = json['indicacao']
+        especificacoes.raca = json['raca']
+        especificacoes.porte = json['porte']
+        especificacoes.idade = json['idade']
+        especificacoes.composicao = json['composicao']
+        especificacoes.cor = json['cor']
+        especificacoes.fragrancia = json['fragrancia']
+        especificacoes.peso = float(json['peso'].replace(',', '.'))
+
+        return especificacoes
 
 
 class Produto(models.Model):
@@ -41,3 +67,22 @@ class Produto(models.Model):
     categoria = models.ForeignKey(Categoria, models.DO_NOTHING, blank=True, null=True)
     especificacoes = models.ForeignKey(Especificacoes, models.DO_NOTHING)
     marca = models.ForeignKey(Marca, models.DO_NOTHING)
+
+    @classmethod
+    def popular(cls, json, categoria=None, marca=None, especificacoes=None):
+        produto = Produto()
+
+        produto.categoria = categoria
+        produto.marca = marca
+
+        produto.nome = json['nome']
+        produto.descricao = json['descriacao']
+        produto.quantidade = json['quantidade']
+        produto.imagem = json['Imagen']
+        produto.preco = json['preco']
+        if (json['preco_promocional'] != ''):
+            produto.preco_promocional = json['preco_promocional']
+
+        produto.especificacoes = especificacoes
+
+        return produto
