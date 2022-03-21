@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 
 from funcionario.models import Funcionario
 from produto.forms import FormProduto
@@ -27,6 +27,7 @@ class listagem_produto(ListView):
 
         return context
 
+
 class listagem_funcionario(ListView):
     template_name = 'listagem_funcionario.html'
 
@@ -39,6 +40,7 @@ class listagem_funcionario(ListView):
         context = super().get_context_data(**kwargs)
 
         return context
+
 
 class listagem_cliente(ListView):
     template_name = 'listagem_cliente.html'
@@ -53,6 +55,7 @@ class listagem_cliente(ListView):
 
         return context
 
+
 class listagem_pedido(ListView):
     template_name = 'listagem_pedido.html'
 
@@ -66,11 +69,13 @@ class listagem_pedido(ListView):
 
         return context
 
+
 class adicionar_produto(CreateView):
-   model = Produto
-   fields = ['nome', 'descricao', 'quantidade',  'imagem',  'preco', 'preco_promocional', 'categoria', 'especificacoes','marca']
-   template_name = 'adicionar_produto.html'
-   success_url = reverse_lazy('listagem_produto')
+    model = Produto
+    fields = ['nome', 'descricao', 'quantidade', 'imagem', 'preco', 'preco_promocional', 'categoria', 'especificacoes',
+              'marca']
+    template_name = 'adicionar_produto.html'
+    success_url = reverse_lazy('listagem_produto')
 
 
 class adicionar_produto(CreateView):
@@ -81,48 +86,57 @@ class adicionar_produto(CreateView):
         context = {}
         context['categorias'] = Categoria.objects.all()
         context['marcas'] = Marca.objects.all()
-        return render(request, template_name,context=context)
+        return render(request, template_name, context=context)
 
     def post(self, request, *args, **kwargs):
 
-        requestJson = json.dumps(request.POST,separators=(',', ':'))
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
 
-        if(requestJson['categoria-nome'] != ''):
+        if (requestJson['categoria-nome'] != ''):
             categoria = Categoria.popular(requestJson['categoria-nome'])
             Categoria.save(categoria)
         else:
-            categoria = get_object_or_404(Categoria,pk=requestJson['categoria-select'])
-        if(requestJson['marca-nome'] != ''):
+            categoria = get_object_or_404(Categoria, pk=requestJson['categoria-select'])
+        if (requestJson['marca-nome'] != ''):
             marca = Marca.popular(requestJson['marca-nome'])
             Marca.save(marca)
         else:
-            marca = get_object_or_404(Marca,pk=requestJson['marca-select'])
+            marca = get_object_or_404(Marca, pk=requestJson['marca-select'])
 
         especificacoes = Especificacoes.popular(requestJson)
         Especificacoes.save(especificacoes)
 
-        produto = Produto.popular(requestJson,categoria,marca,especificacoes).save()
-
-
-
+        produto = Produto.popular(requestJson, categoria, marca, especificacoes).save()
 
         return redirect('listagem_produto')
 
 
+class update_produto(View):
+    template_name = 'alterar_produto.html'
 
-class alterar_produto(View):
-    template_name = 'listagem_produtos.html'
+    def get(self, request, *args, **kwargs):
+        template_name = 'alterar_produto.html'
+        context = {}
+        context['produto'] = get_object_or_404(Produto, pk=self.kwargs['id'])
 
-    def get_queryset(self):
-        self.produto = get_object_or_404(Produto, pk=self.kwargs['id'])
-        return self.produto
+        context['categorias'] = Categoria.objects.all()
+        context['marcas'] = Marca.objects.all()
+        return render(request, template_name, context=context)
+    def post(self, request, *args, **kwargs):
 
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
+        requestJson = json.loads(requestJson)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        produto = get_object_or_404(Produto, pk=self.kwargs['id'])
+        especificacoes = get_object_or_404(Especificacoes, pk=produto.especificacoes.pk)
 
-        return context
+        especificacoes = Especificacoes.popular_alterar(requestJson,especificacoes)
+        produto = Produto.popular_alterar(requestJson,produto)
+        Especificacoes.save(especificacoes)
+        Produto.save(produto)
+
+        return redirect('listagem_produto')
 
 
 def administracao(request):

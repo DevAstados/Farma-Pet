@@ -15,7 +15,7 @@ urlpatterns = [
                   path('listagemCliente/', views.listagem_cliente.as_view(), name='listagem_cliente'),
                   path('adicionaProduto/', views.adicionar_produto.as_view(), name='adiciona_produto'),
 
-                  path('alteraProduto/<id>', views.alterar_produto.as_view(), name='alterar_produto'),
+                  path('alteraProduto/<id>', views.update_produto.as_view(), name='alterar_produto'),
                   path('deletarProduto/<id>', views.excluirProduto, name='deletar_produto'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

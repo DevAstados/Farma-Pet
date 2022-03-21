@@ -52,6 +52,27 @@ class Especificacoes(models.Model):
 
         return especificacoes
 
+    @classmethod
+    def popular_alterar(cls, json, especificacoes):
+        if especificacoes.indicacao != json['indicacao']:
+            especificacoes.indicacao = json['indicacao']
+        if especificacoes.raca != json['raca']:
+            especificacoes.raca = json['raca']
+        if especificacoes.porte != json['porte']:
+            especificacoes.porte = json['porte']
+        if especificacoes.idade != json['idade']:
+            especificacoes.idade = json['idade']
+        if especificacoes.composicao != json['composicao']:
+            especificacoes.composicao = json['composicao']
+        if especificacoes.cor != json['cor']:
+            especificacoes.cor = json['cor']
+        if especificacoes.fragrancia != json['fragrancia']:
+            especificacoes.fragrancia = json['fragrancia']
+        if especificacoes.peso != float(json['peso'].replace(',', '.')):
+            especificacoes.peso = float(json['peso'].replace(',', '.'))
+
+        return especificacoes
+
 
 class Produto(models.Model):
     slug = AutoSlugField(unique=True, always_update=False, populate_from="nome")
@@ -84,5 +105,24 @@ class Produto(models.Model):
             produto.preco_promocional = json['preco_promocional']
 
         produto.especificacoes = especificacoes
+
+        return produto
+
+    @classmethod
+    def popular_alterar(cls, json, produto):
+        if produto.nome != json['nome']:
+            produto.nome = json['nome']
+
+        if produto.descricao != json['descriacao']:
+            produto.descricao = json['descriacao']
+
+        if produto.quantidade != json['quantidade']:
+            produto.quantidade = json['quantidade']
+
+        if produto.preco != json['preco']:
+            produto.preco = json['preco']
+        if (json['preco_promocional'] != ''):
+            if produto.preco_promocional != json['preco_promocional']:
+                produto.preco_promocional = json['preco_promocional']
 
         return produto

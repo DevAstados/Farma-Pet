@@ -36,5 +36,18 @@ function onClickNovaMarca(element) {
         $(".toggle-control-marca-cancel").hide();
     }
 }
+function onClickAlterarCategoriaMarca(element) {
+    if (element == 'toggle-control-marca') {
+        $("#marca-nome").show();
+        $("#marca-select").hide();
+        $(".toggle-control-marca").hide();
+        $(".toggle-control-marca-cancel").show();
 
+    } else {
+        $("#marca-nome").hide();
+        $("#marca-select").show();
+        $(".toggle-control-marca").show();
+        $(".toggle-control-marca-cancel").hide();
+    }
+}
 

@@ -1,0 +1,160 @@
+{% extends 'base_administracao.html' %}
+{% load omFilters %}
+{% load crispy_forms_tags %}
+
+
+{% block conteudo %}
+    <form action="{% url 'alterar_produto' produto.pk %}" method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Nome</label>
+            <div class="col-8">
+                <input id="nome" name="nome" type="text" class="form-control" value="{{ produto.nome }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="descriacao">Descriação</label>
+            <div class="col-8">
+                <textarea id="descriacao" name="descriacao" cols="40" rows="2"
+                          class="form-control">{{ produto.descricao }}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="quantidade" class="col-4 col-form-label">Quantidade</label>
+            <div class="col-8">
+                <input id="quantidade" name="quantidade" type="number" class="form-control"
+                       value="{{ produto.quantidade }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Imagen" class="col-4 col-form-label">Imagen</label>
+            <div class="col-8">
+                <input id="Imagen" name="Imagen" type="file" class="form-control" value="{{ produto.imagem }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="preco" class="col-4 col-form-label">Preço</label>
+            <div class="col-8">
+                <input id="preco" name="preco" type="text" class="form-control" value="{{ produto.preco }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="preco_promocional" class="col-4 col-form-label">Preço Promocional</label>
+            <div class="col-8">
+                <input id="preco_promocional" name="preco_promocional" type="text" class="form-control"
+                       value="{{ produto.preco_promocional }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="categoria" class="col-4 col-form-label">Categoria</label>
+            <div class="col-5">
+                <input id="categoria-nome" name="categoria-nome" type="text" class="form-control" value="{{ produto.nome }}"readonly>
+
+                <select id="categoria-select" name="categoria-select" class="custom-select" style="display: none">
+                    {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="col-2">
+                <button class="ms-2 btn btn-primary btn-confirmar toggle-control-categoria"
+                        onclick="onClickNovaCategoria('toggle-control-categoria')" id="toggle-control-categoria"
+                        type="button">Alterar
+                </button>
+                <button class="ms-2 btn btn-primary btn-danger toggle-control-categoria-cancel"
+                        onclick="onClickNovaCategoria('toggle-control-categoria-cancel')" id="toggle-control-categoria"
+                        type="button" style="display: none">cancelar
+                </button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="marca" class="col-4 col-form-label">Marca</label>
+            <div class="col-5">
+                <input id="marca-nome" name="marca-nome" type="text" class="form-control" value="{{ produto.marca.nome }}" readonly>
+
+                <select id="marca-select" name="marca-select" class="custom-select" style="display: none">
+                    {% for marca in marcas %}
+                        <option value="{{ marca.id }}">{{ marca.nome }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="col-2">
+                <button class="ms-2 btn btn-primary btn-confirmar toggle-control-marca"
+                        onclick="onClickNovaMarca('toggle-control-marca')" id="toggle-control-categoria" type="button">
+                    Alterar
+                </button>
+                <button class="ms-2 btn btn-primary btn-danger toggle-control-marca-cancel"
+                        onclick="onClickNovaMarca('toggle-control-marca-cancel')" id="toggle-control-categoria"
+                        type="button" style="display: none">cancelar
+                </button>
+            </div>
+        </div>
+        <h4 class="">Especificações</h4>
+
+
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Indicação</label>
+            <div class="col-8">
+                <input id="indicacao" name="indicacao" type="text" class="form-control" value="{{ produto.especificacoes.indicacao }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Raça</label>
+            <div class="col-8">
+                <input id="raca" name="raca" type="text" class="form-control" value="{{ produto.especificacoes.raca }}" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Porte</label>
+            <div class="col-8">
+                <input id="porte" name="porte" type="text" class="form-control" value="{{ produto.especificacoes.porte }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Idade</label>
+            <div class="col-8">
+                <input id="idade" name="idade" type="text" class="form-control" value="{{ produto.especificacoes.idade }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Composição</label>
+            <div class="col-8">
+                <textarea id="composicao" name="composicao" cols="40" rows="2" class="form-control">{{ produto.especificacoes.composicao }}</textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Cor</label>
+            <div class="col-8">
+                <input id="cor" name="cor" type="text" class="form-control" value="{{ produto.especificacoes.cor }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="nome">Fragrância</label>
+            <div class="col-8">
+                <input id="fragrancia" name="fragrancia" type="text" class="form-control" value="{{ produto.especificacoes.fragrancia }}" >
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label" for="peso">Peso</label>
+            <div class="col-2">
+                <div class="input-group">
+                    <input id="peso" name="peso" type="text" class="form-control" value="{{ produto.especificacoes.peso }}" >
+                    <div class="input-group-append">
+                        <div class="input-group-text">KG</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class=" col-8">
+                <button name="submit" type="submit" class="btn btn-primary">Alterar</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock conteudo %}
+{% block scripts %}
+{% endblock scripts %}
