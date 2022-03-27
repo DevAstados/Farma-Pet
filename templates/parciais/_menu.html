@@ -64,7 +64,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
             {% endif %}
             <!-- header lists -->
-            <ul>
+            <ul style="text-align: right">
 
                 {% if not request.user.is_authenticated %}
 
@@ -72,7 +72,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <a href="#" data-toggle="modal" data-target="#login" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Entre </a>
                     </li>
-
+                    <li class="text-center border-right text-white">
+                        <a href="." class="text-white">
+                            <i class="fas fa-registered mr-2"></i> Cadastro </a>
+                    </li>
                 {% else %}
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <!-- menu do cliente quando logar -->
@@ -149,7 +152,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="col-md-2 logo_agile">
                     <h1 class="text-center">
                         <a href="{% url 'home' %}" class="font-weight-bold font-italic">
-                            <header alt=" " class="img-fluid">&nbsp;&nbsp;&nbsp;Silpan</header>
+                            <header alt=" " class="img-fluid">&nbsp;&nbsp;Farma Pet</header>
                         </a>
                     </h1>
                 </div>
@@ -215,8 +218,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         {% for  categoria in categorias %}
                             <li class="nav-item mr-lg-2 mb-lg-0 mb-2">
                                 <a class="nav-link"
-                                   href="{% url 'produtos:listaCategoria' categoria=categoria.nome.lower %} ">{{ categoria.nome }}
-                                 <span class="sr-only"></span></a>
+                                   href="">{{ categoria.nome }}
+                                    <span class="sr-only"></span></a>
                             </li>
                         {% endfor %}
 

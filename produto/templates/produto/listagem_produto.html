@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load omFilters %}
+
+<main>
+    {% block conteudo %}
+        <!-- page -->
+        <div class="services-breadcrumb">
+            <div class="agile_inner_breadcrumb">
+                <div class="container">
+                    <ul class="w3_short">
+                        <li>
+                            <a href="{% url 'home' %}">Início</a>
+                            <i>|</i>
+                        </li>
+                        <li>{{ categoria }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- //page -->
+
+        <!-- top Products -->
+        <div class="ads-grid py-sm-5 py-4">
+            <div class="container py-xl-4 py-lg-2">
+                {% if produtos != None %}
+
+                    <!-- tittle heading -->
+                    <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
+                        <!-- nome da categoria -->
+                        {% for nome in categoria.getNomeCategoria %}
+                            {% for key, value in nome.items %}
+                                <span>{{ key }}</span>{{ value }}
+                            {% endfor %}
+                        {% endfor %}
+                    </h3>
+
+                    <!-- //nome da categoria -->
+
+                    <!-- //tittle heading -->
+                    <div class="row">
+                    </div>
+                    <!-- //product right -->
+                    </div>
+                {% else %}
+                    {% if categoria is not None and pesquisa_produto is not None %}
+                        <h2 style="padding-left: 250px">Nenhum resultado para {{ pesquisa_produto }} na
+                            categoria {{ categoria }}</h2>
+                    {% elif categoria is not None  and pesquisa_produto is None %}
+                        <h2 style="padding-left: 230px">Nenhum produto cadastrado na categoria {{ categoria }}</h2>
+                    {% else %}
+                        <h2 style="padding-left: 250px">Nenhum resultado para {{ pesquisa_produto }} </h2>
+
+                    {% endif %}
+                {% endif %}
+            <!-- product left -->
+            <div class="agileinfo-ads-display col-lg-9" style="padding-left:30px; max-width:100%;">
+
+
+                <div class="wrapper">
+                    {% if produtos != None %}
+
+                        {% for colunProdut in produtos %}
+                            <!-- first section -->
+                            <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
+                                <div class="row">
+
+                                    {% for produto in colunProdut %}
+                                        <!-- produto -->
+
+                                        <div class="col-md-4 product-men">
+                                            <div class="men-pro-item simpleCart_shelfItem">
+                                                <div class="men-thumb-item text-center">
+                                                    <img src="{{ produto.imagem.medium.url }}"
+                                                         alt="{{ produto.nome }}">
+                                                    <div class="men-cart-pro">
+                                                        <div class="inner-men-cart-pro">
+                                                            <a href="{{ produto.get_absolute_url }}"
+                                                               class="link-product-add-cart">Detalhes</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item-info-product text-center border-top mt-4">
+                                                    <h4 class="pt-1">
+                                                        <a href="{{ produto.get_absolute_url }}">{{ produto.nome }}</a>
+                                                    </h4>
+                                                    <div class="info-product-price my-2">
+
+                                                        {% if produto.preo_promocional %}
+                                                            <span class="item_price">R${{ produto.preo_promocional|formata_preco }}</span>
+                                                            <del>
+                                                                R$ {{ produto.preco|formata_preco }}</del>
+                                                        {% else %}
+                                                            <span class="item_price">R${{ produto.preco|formata_preco }}</span>
+
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                                                        <form action="#" method="post">
+                                                            <fieldset>
+                                                                <input type="hidden" name="cmd" value="_cart"/>
+                                                                <input type="hidden" name="add" value="1"/>
+                                                                <input type="hidden" name="id"
+                                                                       value="{{ produto.id }}"/>
+                                                                <input type="hidden" name="imagem"
+                                                                       value="{{ produto.imagem.thumbnail.url }}"/>
+                                                                <input type="hidden" name="cor"
+                                                                       value="{{ produto.cor }}"/>
+                                                                <input type="hidden" name="material"
+                                                                       value="{{ produto.material }}"/>
+                                                                <input type="hidden" name="largura"
+                                                                       value="{{ produto.largura }}"/>
+                                                                <input type="hidden" name="altura"
+                                                                       value="{{ produto.altura }}"/>
+                                                                <input type="hidden" name="comprimento"
+                                                                       value="{{ produto.comprimento }}"/>
+
+                                                                <input type="hidden" name="business" value=" "/>
+                                                                <input type="hidden" name="item_name"
+                                                                       value="{{ produto.nome }}"/>
+
+                                                                {% if produto.preo_promocional > 0 %}
+
+                                                                    <input type="hidden" name="amount"
+                                                                           value="{{ produto.preo_promocional }}"/>
+
+                                                                    <input type="hidden" name="desconto"
+                                                                           value="{{ produto.getDesconto }}"/>
+
+                                                                {% else %}
+                                                                    <input type="hidden" name="amount"
+                                                                           value="{{ produto.preco_marketing }}"/>
+                                                                    <input type="hidden" name="discount_amount"
+                                                                           z value="0.00"/>
+                                                                    <input type="hidden" name="desconto"
+                                                                           value="0.00"/>
+                                                                {% endif %}
+
+
+
+                                                                <input type="hidden" name="currency_code"
+                                                                       value="BRL"/>
+                                                                <input type="hidden" name="return" value=" "/>
+                                                                <input type="hidden" name="cancel_return"
+                                                                       value=" "/>
+                                                                <input type="submit" name="submit" value="Adicionar"
+                                                                       class="button btn"/>
+                                                            </fieldset>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <!-- //produto -->
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- //first section -->
+
+                </div>
+            </div>
+            <!-- //product left -->
+
+
+        </div>
+        </div>
+        </div>
+        <!-- //top products -->
+
+    {% endblock conteudo %}
+</main>

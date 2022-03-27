@@ -126,3 +126,32 @@ class Produto(models.Model):
                 produto.preco_promocional = json['preco_promocional']
 
         return produto
+    @classmethod
+    def split(cls, lista, tamanho):
+        return [lista[i:i + tamanho] for i in range(0, len(lista), tamanho)]
+
+    @classmethod
+    def getListProdutInColun(cls, categoria=None, nome_produto=None):
+        listProduct = []
+
+        if categoria is None:
+            if nome_produto is None:
+                listProduct = Produto.objects.all()
+            else:
+
+                for produto in Produto.objects.filter(nome__contains=nome_produto):
+                    listProduct.append(produto)
+
+        else:
+            if nome_produto is not None:
+                for produto in Produto.objects.filter(categoria=categoria, nome__contains=nome_produto):
+                    listProduct.append(produto)
+            else:
+
+                for produto in Produto.objects.filter(categoria=categoria):
+                    listProduct.append(produto)
+
+        if listProduct.__len__() < 1:
+            return None
+
+        return Produto.split(listProduct, 3)

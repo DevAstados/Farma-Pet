@@ -20,8 +20,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+import produto.views
 
 urlpatterns = [
+                  path('', produto.views.home.as_view(),  name='home'),
                   path('admin/', admin.site.urls),
                   path('administracao/', include('administracao.urls')),
                   path('', include('produto.urls')),

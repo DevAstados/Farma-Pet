@@ -197,8 +197,10 @@ def excluirProduto(request, id):
 def excluirFuncionario(request, id):
     if request.method == 'GET':
         funcionario = get_object_or_404(Funcionario, pk=id)
-        get_object_or_404(Usuario, pk=funcionario.usuario.pk).delete()
+        usuario = get_object_or_404(Usuario, pk=funcionario.usuario.pk)
+
         funcionario.delete()
+        usuario.delete()
         return redirect('listagem_funcionario')
 
 def login(request):
