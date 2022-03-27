@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 # Create your models here.
+from django.urls import reverse
 from stdimage import StdImageField
 
 
@@ -88,6 +89,16 @@ class Produto(models.Model):
     categoria = models.ForeignKey(Categoria, models.DO_NOTHING, blank=True, null=True)
     especificacoes = models.ForeignKey(Especificacoes, models.DO_NOTHING)
     marca = models.ForeignKey(Marca, models.DO_NOTHING)
+
+    def __str__(self):
+        return self.nome
+
+    def get_absolute_url(self):
+        return reverse("produtos:detalhe", kwargs={"slug": self.slug})
+
+    def getDesconto(self):
+        if self.preco_promocional:
+            return self.preco - self.preco_promocional
 
     @classmethod
     def popular(cls, json, categoria=None, marca=None, especificacoes=None):

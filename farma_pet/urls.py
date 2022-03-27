@@ -24,10 +24,12 @@ import produto.views
 
 urlpatterns = [
                   path('', produto.views.home.as_view(),  name='home'),
-                  path('admin/', admin.site.urls),
+                  path('<categoria>', produto.views.home.as_view(),  name='listagem_produto'),
+
                   path('administracao/', include('administracao.urls')),
-                  path('', include('produto.urls')),
-                  path('', include('funcionario.urls')),
+                  path('produto/', include('produto.urls')),
+                  path('funcionario/', include('funcionario.urls')),
                   path('__debug__/', include(debug_toolbar.urls)),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+"""path('admin/', admin.site.urls),"""

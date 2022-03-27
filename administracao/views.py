@@ -71,12 +71,6 @@ class listagem_pedido(ListView):
         return context
 
 
-class adicionar_produto(CreateView):
-    model = Produto
-    fields = ['nome', 'descricao', 'quantidade', 'imagem', 'preco', 'preco_promocional', 'categoria', 'especificacoes',
-              'marca']
-    template_name = 'adicionar_produto.html'
-    success_url = reverse_lazy('listagem_produto')
 
 
 class adicionar_produto(CreateView):
