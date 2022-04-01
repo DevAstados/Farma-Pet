@@ -198,8 +198,10 @@ def excluirFuncionario(request, id):
         return redirect('listagem_funcionario')
 
 def login(request):
-    pass
+    print('teste')
 
+def cadastrado_google(request):
+    print(request.user.password)
 
 def Logout(request):
     if request.method == 'GET':

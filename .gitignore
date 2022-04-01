@@ -6,6 +6,10 @@ __pycache__
 db.sqlite3
 #media
 
+#segurança
+.token
+
+
 # Backup files #
 *.bak
 
