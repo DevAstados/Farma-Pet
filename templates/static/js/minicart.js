@@ -2899,7 +2899,7 @@
 
         var config = require('./config'),
             events = require('./util/events'),
-            template = require('./util/templates'),
+            template = require('./util/template'),
             forms = require('./util/forms'),
             css = require('./util/css'),
             viewevents = require('./viewevents'),
