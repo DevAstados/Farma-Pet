@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load omFilters %}
+{% load static %}
+
+{% block conteudo %}
+    <div class="privacy py-sm-5 py-4">
+        <div class="container py-xl-4 py-lg-2">
+            <!-- tittle heading -->
+            <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
+                <span>C</span>onfirmação de Pedido
+            </h3>
+            <!-- //tittle heading -->
+            <div class="checkout-right">
+                <h4 class="mb-sm-4 mb-3">Seu carrinho de compras contém:
+                    <span><label id="contagem_produto"></label> Itens</span>
+
+                    <script>
+                        var contagem_produt = window.localStorage.getItem('PPminicarts');
+                        var contagem_produt = JSON.parse(decodeURIComponent(contagem_produt)).value.items
+                        var len_contagem_produt = 0
+                        for (let item of contagem_produt) {
+                            len_contagem_produt += item.quantity
+                        }
+
+
+                        document.getElementById("contagem_produto").innerHTML = len_contagem_produt
+
+                    </script>
+                </h4>
+                <div class="table-responsive" id="table-products">
+                    <table class="timetable_sub">
+                        <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Nome do Produto</th>
+                            <th>Quantidade</th>
+                            <th>Subtotal</th>
+                            <th>Desconto</th>
+                            <th>Total</th>
+                            <th>Remover</th>
+                        </tr>
+                        </thead>
+                        <tbody id="t-product">
+                        </tbody>
+
+                    </table>
+                    <li class="font-weight-bold list-group-item bg-light">Subtotal
+                        <span class="float-right" id="subtotal-checkout"></span>
+                    </li>
+                    <li class="font-weight-bold list-group-item bg-light">Desconto
+                        <span class="float-right" id="desconto-checkout"></span>
+                    </li>
+                    <li class="font-weight-bold list-group-item bg-light">Total
+                        <span class="float-right" id="total-checkout"></span>
+                    </li>
+                </div>
+            </div>
+            <!-- Endereço-->
+            <div class="checkout-left">
+                <div class="address_form_agile mt-sm-5 mt-4">
+                    <form method="get" action={% url "pedido:selecionarClienteEndereco" %} class="creditly-card-form
+                          agileinfo_form id="form">
+                        {% csrf_token %}
+                        <div class="creditly-wrapper wthree, w3_agileits_wrapper">
+
+                            <button class="submit check_out btn" type="submit" id="pagamento_pedido"
+                            >Selecionar Cliente e Endereço de Entrega
+                                <span class="far fa-hand-point-right"></span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Endereço-->
+
+{% endblock conteudo %}
+
+{% block scripts %}
+
+    <!-- //copyright -->
+
+    <!-- js-files -->
+    <!-- jquery -->
+    <script src="{% static 'js/carrinho.js' %}"></script>
+    <script src="{% static 'js/pagamento.js' %}"></script>
+    <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
+    <!-- //jquery -->
+
+
+
+    <!-- nav smooth scroll -->
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
+    <!-- //nav smooth scroll -->
+    <!-- pagamento -->
+    <script>
+
+        const constructListProducts = () => {
+            if (loadProducts().value.items.length > 0) {
+                const items = loadProducts().value.items;
+                let html = '';
+                let count = 0;
+                let total = 0;
+                let subtotal = 0;
+                let descontos = 0;
+                for (let item of items) {
+                    count++
+                    descontos += parseFloat(item.discount_amount) * item.quantity
+                    subtotal += item.quantity * item.amount
+                    total += item.quantity * (item.amount - parseFloat(item.discount_amount))
+                    html += `
+                    <tr class="rem1">
+
+                        <td class="invert-image">
+                           <img src="${item.imagem}" alt=" " class="img-responsive">
+                        </td>
+                        <td class="invert">${item.item_name}</td>
+                        <td class="invert">
+                            <div class="quantity">
+                                <div class="quantity-select">
+                                    <div class="entry value-minus alter-quantity" id="minus-${item.id}">&nbsp;</div>
+                                    <div class="entry value">
+                                        <span>${item.quantity}</span>
+                                    </div>
+                                    <div class="entry value-plus active alter-quantity" id="plus-${item.id}">&nbsp;</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * item.amount).toFixed(2)}</td>
+                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * parseFloat(item.discount_amount)).toFixed(2)}</td>
+                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * (item.amount - parseFloat(item.discount_amount))).toFixed(2)}</td>
+
+
+
+
+                        <td class="invert">
+                            <button type="button" onclick="removeProduct(${item.id})"> x </button>
+                        </td>
+                    </tr>
+                `
+
+                }
+
+
+                document.getElementById('subtotal-checkout').innerHTML = `R$ ${subtotal.toFixed(2)} `
+                document.getElementById('desconto-checkout').innerHTML = `R$ ${descontos.toFixed(2)} `
+                document.getElementById('total-checkout').innerHTML = `R$ ${total.toFixed(2)} `
+                document.getElementById('t-product').innerHTML = html;
+            }
+        }
+        const removeProduct = (id) => {
+            let items = loadProducts();
+
+            itemIndex = items.value.items.findIndex(item => item.id == id);
+            items.value.items.splice(itemIndex, 1);
+            window.localStorage.setItem('PPminicarts', encodeURIComponent(JSON.stringify(items)))
+
+            window.location.reload()
+
+        }
+
+        constructListProducts();
+
+        const updatePriceProduct = (id) => {
+            let incr = -1
+            descrementa = true
+            if (id.indexOf('plus') > -1) {
+                incr = 1
+                descrementa = false
+            }
+            id = id.replace("plus-", "").replace("minus-", "")
+            console.log(id)
+            let items = loadProducts();
+
+            itemIndex = items.value.items.findIndex(item => item.id == id);
+
+            if (items.value.items[itemIndex].quantity == 1 && descrementa) {
+                removeProduct(itemIndex)
+            } else {
+                items.value.items[itemIndex].quantity += incr
+                let product = items.value.items[itemIndex];
+                let total = product.quantity * product.amount
+                document.getElementById(`price-${id}`).innerText = `R$ ${total.toFixed(2)}`
+                window.localStorage.setItem('PPminicarts', encodeURIComponent(JSON.stringify(items)))
+
+            }
+        }
+
+        Array.from(document.getElementsByClassName("alter-quantity")).map(item => {
+            item.addEventListener("click", (event) => {
+                updatePriceProduct(event.currentTarget.id)
+                window.location.reload()
+
+            })
+
+        })
+    </script>
+
+
+
+
+{% endblock scripts %}

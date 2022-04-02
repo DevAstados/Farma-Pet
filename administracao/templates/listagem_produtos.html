@@ -1,0 +1,53 @@
+{% extends 'base_administracao.html' %}
+{% load omFilters %}
+
+
+{% block conteudo %}
+
+    <form action="{% url 'adiciona_produto' %}">
+
+        <input type="submit" value="Adicionar">
+    </form>
+
+    <table class="table table-striped table-listagem-produto">
+        <tr>
+            <th scope="col" style="width:30px">N</th>
+            <th scope="col" style="width:30%">Nome</th>
+            <th scope="col">Qtd</th>
+            <th scope="col">Preço Atual</th>
+            <th scope="col" colspan="2" style="text-align: center   ">Editação</th>
+        </tr>
+
+        {% for produto in object_list %}
+            <tr>
+                <td>{{ produto.id|formata_codigo_produto}}</td>
+                <td>{{ produto.nome }}</td>
+                <td>{{ produto.quantidade }}</td>
+                <td>
+                    {% if produto.preco_promocional %}
+                        {{ produto.preco_promocional|formata_preco }}
+                    {% else %}
+                        {{ produto.preco|formata_preco }}
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url 'alterar_produto' produto.id %}" method="get">
+                        <input type="submit" value="Alterar">
+                    </form>
+
+                </td>
+                <td>
+                    <form action="{% url 'deletar_produto' produto.id %}" method="get">
+                        <input type="submit" value="deletar">
+                    </form>
+                </td>
+
+
+            </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+{% endblock %}

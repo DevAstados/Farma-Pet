@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load omFilters %}
+{% load static %}
+
+{% block conteudo %}
+    <div class="privacy py-sm-5 py-4">
+        <div class="container py-xl-4 py-lg-2">
+            <!-- tittle heading -->
+            <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
+                <span>A</span>dicionar detalhes da compra
+            </h3>
+            <div class="messages" style="color: red; text-align: center">
+                {% for message in messages %}
+                    <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a><br>
+                {% endfor %}
+            </div>
+            <!-- Endereço-->
+            <div class="checkout-left">
+                <div class="address_form_agile mt-sm-5 mt-4">
+                    <form method="post" class="creditly-card-form agileinfo_form" id="form_cliente">
+                        {% csrf_token %}
+                        <div class="creditly-wrapper wthree, w3_agileits_wrapper">
+                            <div class="information-wrapper">
+                                <div class="first-row">
+                                    <input type="hidden" name="cadastro" value="False" id="cadastro">
+                                    <div class="controls form-group">
+                                        <input class="billing-address-name form-control" type="text" name="cpf"
+                                               placeholder="CPF" id="text_cpf" required="">
+                                    </div>
+                                    <div class="controls form-group">
+                                        <input class="billing-address-name form-control" type="text" name="nome"
+                                               placeholder="Nome Completo" id="text_nome" required="">
+                                    </div>
+
+                                    <div class="controls form-group">
+                                        <select class="option-w3ls" name="endereco" id="select_endereco">
+                                        </select>
+                                    </div>
+                                    <div class="w3_agileits_card_number_grids">
+                                        <div class="w3_agileits_card_number_grid_left form-group">
+                                            <div class="controls">
+                                                <input type="text" class="form-control" placeholder="Número de Telefone"
+                                                       name="numero_telefone" required="" id="text_telefone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="controls form-group">
+                                        <select class="option-w3ls" name="forma_pagamento">
+                                            <option value="0">Tipo de Pagamento</option>
+                                            {% for Forma_pagamento in Forma_pagamentos %}
+                                                <option value="{{ Forma_pagamento.id }}">{{ Forma_pagamento }}</option>
+
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="submit check_out btn" type="submit" id="pagamento_pedido"
+                                >Finalizar Pedido
+                                    <span class="far fa-hand-point-right"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Endereço-->
+
+{% endblock conteudo %}
+
+{% block scripts %}
+
+    <!-- //copyright -->
+
+    <!-- js-files -->
+    <!-- jquery -->
+
+    <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
+    <!-- //jquery -->
+    <script src="{% static 'js/pagamento.js' %}"></script>
+    <script src="{% static 'js/carrinho.js' %}"></script>
+
+
+    <!-- nav smooth scroll -->
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
+    <!-- //nav smooth scroll -->
+
+    <!-- popup modal (for location)-->
+    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+    <script>
+        DJANGO_STATIC_URL = '{{ STATIC_URL }}';
+
+        $(document).ready(function () {
+            $('.popup-with-zoom-anim').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+        });
+
+
+        const constructListProducts = () => {
+            if (loadProducts().value.items.length > 0) {
+                const items = loadProducts().value.items;
+                let html = '';
+                let count = 0;
+                for (let item of items) {
+                    count++
+                    console.log(item)
+                    html += `
+                    <tr class="rem1">
+                        <td class="invert">${count}</td>
+                        <td class="invert-image">
+                            <a href="../../templates/single.html">
+                                <img src=" ${item.image}" alt=" " class="img-responsive">
+                            </a>
+                        </td>
+                        <td class="invert">
+                            <div class="quantity">
+                                <div class="quantity-select">
+                                    <div class="entry value-minus">&nbsp;</div>
+                                    <div class="entry value">
+                                        <span>${item.quantity}</span>
+                                    </div>
+                                    <div class="entry value-plus active">&nbsp;</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="invert">${item.item_name}</td>
+                        <td class="invert">R$ ${item.amount.toFixed(2)}</td>
+                        <td class="invert">
+                            <button type="button" onclick="removeProduct(${item.id})"> x </button>
+                        </td>
+                    </tr>
+                `
+                }
+                document.getElementById('t-product').innerHTML = html;
+            }
+        }
+        const removeProduct = (id) => {
+            let items = loadProducts();
+
+            itemIndex = items.value.items.findIndex(item => item.id == id);
+            items.value.items.splice(itemIndex, 1);
+            window.localStorage.setItem('PPminicarts', encodeURIComponent(JSON.stringify(items)))
+            window.location.reload();
+        }
+        constructListProducts();
+        constructListProducts();
+    </script>
+    <!-- //popup modal (for location)-->
+
+    <!-- cart-js -->
+    <script src="{% static 'js/minicart.js' %}"></script>
+
+    <script>
+        paypals.minicarts.render(); //use only unique class names other than paypals.minicarts.Also Replace same class name in css and minicart.min.js
+
+        paypals.minicarts.cart.on('checkout', function (evt) {
+            var items = this.items(),
+                len = items.length,
+                total = 0,
+                i;
+
+            // Count the number of each item in the cart
+            for (i = 0; i < len; i++) {
+                total += items[i].get('quantity');
+            }
+        });
+
+    </script>
+    <!-- //cart-js -->
+
+    <!-- password-script -->
+    <script>
+        window.onload = function () {
+            document.getElementById("password1").onchange = validatePassword;
+            document.getElementById("password2").onchange = validatePassword;
+        }
+
+        function validatePassword() {
+            var pass2 = document.getElementById("password2").value;
+            var pass1 = document.getElementById("password1").value;
+            if (pass1 != pass2)
+                document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+            else
+                document.getElementById("password2").setCustomValidity('');
+            //empty string means no validation error
+        }
+    </script>
+    <!-- //password-script -->
+
+    <!-- quantity -->
+    <script>
+        $('.value-plus').on('click', function () {
+            var divUpd = $(this).parent().find('.value'),
+                newVal = parseInt(divUpd.text(), 10) + 1;
+            divUpd.text(newVal);
+        });
+
+        $('.value-minus').on('click', function () {
+            var divUpd = $(this).parent().find('.value'),
+                newVal = parseInt(divUpd.text(), 10) - 1;
+            if (newVal >= 1) divUpd.text(newVal);
+        });
+    </script>
+    <!--quantity-->
+    <script>
+        $(document).ready(function (c) {
+            $('.close1').on('click', function (c) {
+                $('.rem1').fadeOut('slow', function (c) {
+                    $('.rem1').remove();
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function (c) {
+            $('.close2').on('click', function (c) {
+                $('.rem2').fadeOut('slow', function (c) {
+                    $('.rem2').remove();
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function (c) {
+            $('.close3').on('click', function (c) {
+                $('.rem3').fadeOut('slow', function (c) {
+                    $('.rem3').remove();
+                });
+            });
+        });
+    </script>
+    <!-- //quantity -->
+
+    <!-- smoothscroll -->
+    <script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+    <!-- //smoothscroll -->
+
+    <!-- start-smooth-scrolling -->
+    <script src="{% static 'js/move-top.js' %}"></script>
+    <script src="{% static 'js/easing.js' %}"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+
+                $('html,body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 1000);
+            });
+        });
+    </script>
+    <!-- //end-smooth-scrolling -->
+
+    <!-- smooth-scrolling-of-move-up -->
+    <script>
+        $(document).ready(function () {
+            /*
+            var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear'
+            };
+            */
+            $().UItoTop({
+                easingType: 'easeOutQuart'
+            });
+
+        });
+    </script>
+    <!-- //smooth-scrolling-of-move-up -->
+
+    <!-- for bootstrap working -->
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <!-- //for bootstrap working -->
+    <!-- //js-files -->
+
+
+    <!-- //top products -->
+
+{% endblock scripts %}

@@ -1,0 +1,45 @@
+{% extends 'base_administracao.html' %}
+
+
+
+{% block conteudo %}
+
+    <form action="{% url 'adiciona_funcionario' %}">
+
+        <input type="submit" value="Adicionar">
+    </form>
+
+    <table class="table table-striped table-listagem-produto">
+        <tr>
+            <th scope="col" style="width:30px">Funcional</th>
+            <th scope="col" style="width:30%">Nome</th>
+            <th scope="col" style="width:600px">usuario</th>
+            <th scope="col" colspan="2" style="text-align: center ">Editação</th>
+        </tr>
+
+        {% for funcionario in object_list %}
+            <tr>
+                <td>{{ funcionario.id }}</td>
+                <td>{{ funcionario.nome }}</td>
+                <td>{{ funcionario.usuario.login }}</td>
+                <td style="left: 50px">
+                    <form action="{% url 'alterar_funcionario' funcionario.id %}" method="get">
+                        <input type="submit" value="Alterar">
+                    </form>
+
+                </td>
+                <td>
+                    <form action="{% url 'deletar_funcionario' funcionario.id %}" method="get">
+                        <input type="submit" value="deletar">
+                    </form>
+                </td>
+
+
+            </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+{% endblock %}
