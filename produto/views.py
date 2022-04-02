@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 
 class home(ListView):
     template_name = 'produto/listagem_produto.html'
-
     def get_queryset(self):
         self.produtos = Produto.objects.all()
         return self.produtos

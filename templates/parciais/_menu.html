@@ -85,7 +85,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </li>
 
                     <li class="text-center border-right text-white">
-                        <a href="{% url 'logout' %}" class="text-white">
+                        <a href="{% url 'adm:logout' %}" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Sair </a>
                     </li>
 
@@ -116,7 +116,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'login' %}" method="post">
+                    <form action="{% url 'adm:login' %}" method="post">
                         {% csrf_token %}
 
                         <div class="form-group">
@@ -128,6 +128,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <input type="password" class="form-control" placeholder=" " name="password" required=""
                                    id="password">
                         </div>
+
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-google"></i>
+                            <a class="white" href="{% url 'social:begin' 'google-oauth2'  %} ">
+                                Login com Google
+                            </a>
+                        </button>
+
                         <div class="right-w3l">
                             <input type="submit" class="form-control" value="Entrar">
                         </div>
@@ -231,6 +239,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- //navigation -->
     {% block conteudo %}
     {% endblock conteudo %}
+    {% block script %}
+
 
     <!-- js-files -->
     <!-- jquery -->
@@ -359,5 +369,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="{% static 'js/bootstrap.js' %} "></script>
     <!-- //for bootstrap working -->
     <!-- //js-files -->
+{% endblock script %}
 </body>
 </html>

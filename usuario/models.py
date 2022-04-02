@@ -1,3 +1,5 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -6,6 +8,7 @@ class Usuario(models.Model):
     login = models.CharField(max_length=30)
     senha = models.CharField(max_length=30)
     email = models.CharField(max_length=250)
+
 
     @classmethod
     def popular(cls, json):
