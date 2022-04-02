@@ -4,7 +4,7 @@
 
 {% block conteudo %}
 
-    <form action="{% url 'adiciona_produto' %}">
+    <form action="{% url 'adm:adiciona_produto' %}">
 
         <input type="submit" value="Adicionar">
     </form>
@@ -31,13 +31,13 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form action="{% url 'alterar_produto' produto.id %}" method="get">
+                    <form action="{% url 'adm:alterar_produto' produto.id %}" method="get">
                         <input type="submit" value="Alterar">
                     </form>
 
                 </td>
                 <td>
-                    <form action="{% url 'deletar_produto' produto.id %}" method="get">
+                    <form action="{% url 'adm:deletar_produto' produto.id %}" method="get">
                         <input type="submit" value="deletar">
                     </form>
                 </td>

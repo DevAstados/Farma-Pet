@@ -4,7 +4,7 @@
 
 {% block conteudo %}
 
-    <form action="{% url 'adiciona_funcionario' %}">
+    <form action="{% url 'adm:adiciona_funcionario' %}">
 
         <input type="submit" value="Adicionar">
     </form>
@@ -23,13 +23,13 @@
                 <td>{{ funcionario.nome }}</td>
                 <td>{{ funcionario.usuario.login }}</td>
                 <td style="left: 50px">
-                    <form action="{% url 'alterar_funcionario' funcionario.id %}" method="get">
+                    <form action="{% url 'adm:alterar_funcionario' funcionario.id %}" method="get">
                         <input type="submit" value="Alterar">
                     </form>
 
                 </td>
                 <td>
-                    <form action="{% url 'deletar_funcionario' funcionario.id %}" method="get">
+                    <form action="{% url 'adm:deletar_funcionario' funcionario.id %}" method="get">
                         <input type="submit" value="deletar">
                     </form>
                 </td>

@@ -4,7 +4,7 @@
 
 
 {% block conteudo %}
-    <form action="{% url 'alterar_funcionario' funcionario.pk %}" method="post">
+    <form action="{% url 'adm:alterar_funcionario' funcionario.pk %}" method="post">
         {% csrf_token %}
         <div class="form-group row">
             <label class="col-4 col-form-label" for="nome">Nome</label>

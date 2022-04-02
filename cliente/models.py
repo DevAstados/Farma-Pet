@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pycep_correios import get_address_from_cep, WebService, exceptions
 
 import re
 
-'''
-from pycep_correios import get_address_from_cep, WebService, exceptions
-'''
+
+
 
 from utils import validacpf
 
@@ -64,7 +64,7 @@ class Cliente(models.Model):
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
 
-'''
+
 class Endereco(models.Model):
     tipo = models.CharField(max_length=30)
     numero = models.CharField(max_length=6)
@@ -111,5 +111,4 @@ class Endereco(models.Model):
 
     class Meta:
         verbose_name = 'Endereço'
-        verbose_name_plural = 'Endereços' 
-'''
+        verbose_name_plural = 'Endereços'
