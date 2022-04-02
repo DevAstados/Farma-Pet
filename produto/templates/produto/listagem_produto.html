@@ -87,11 +87,11 @@
                                                     <div class="info-product-price my-2">
 
                                                         {% if produto.preo_promocional %}
-                                                            <span class="item_price">R${{ produto.preo_promocional|formata_preco }}</span>
+                                                            <span class="item_price">{{ produto.preo_promocional|formata_preco }}</span>
                                                             <del>
                                                                 R$ {{ produto.preco|formata_preco }}</del>
                                                         {% else %}
-                                                            <span class="item_price">R${{ produto.preco|formata_preco }}</span>
+                                                            <span class="item_price">{{ produto.preco|formata_preco }}</span>
 
                                                         {% endif %}
                                                     </div>
@@ -104,36 +104,23 @@
                                                                        value="{{ produto.id }}"/>
                                                                 <input type="hidden" name="imagem"
                                                                        value="{{ produto.imagem.thumbnail.url }}"/>
-                                                                <input type="hidden" name="cor"
-                                                                       value="{{ produto.cor }}"/>
-                                                                <input type="hidden" name="material"
-                                                                       value="{{ produto.material }}"/>
-                                                                <input type="hidden" name="largura"
-                                                                       value="{{ produto.largura }}"/>
-                                                                <input type="hidden" name="altura"
-                                                                       value="{{ produto.altura }}"/>
-                                                                <input type="hidden" name="comprimento"
-                                                                       value="{{ produto.comprimento }}"/>
-
                                                                 <input type="hidden" name="business" value=" "/>
                                                                 <input type="hidden" name="item_name"
                                                                        value="{{ produto.nome }}"/>
 
-                                                                {% if produto.preo_promocional > 0 %}
+                                                                {% if produto.preco_promocional > 0 %}
 
-                                                                    <input type="hidden" name="amount"
-                                                                           value="{{ produto.preo_promocional }}"/>
+                                                                    <input type="hidden" name="preco"
+                                                                           value="{{ produto.preco_promocional }}"/>
 
                                                                     <input type="hidden" name="desconto"
                                                                            value="{{ produto.getDesconto }}"/>
 
                                                                 {% else %}
-                                                                    <input type="hidden" name="amount"
-                                                                           value="{{ produto.preco_marketing }}"/>
-                                                                    <input type="hidden" name="discount_amount"
-                                                                           z value="0.00"/>
+                                                                    <input type="hidden" name="preco"
+                                                                           value="{{ produto.preco }}"/>
                                                                     <input type="hidden" name="desconto"
-                                                                           value="0.00"/>
+                                                                           z value="0,00"/>
                                                                 {% endif %}
 
 

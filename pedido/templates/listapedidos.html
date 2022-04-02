@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load omFilters %}
+
+
+{% block conteudo %}
+    {% if pedidos %}
+
+        <table class="table table-striped">
+                    <tr>
+                      <th scope="col">Pedido</th>
+                      <th scope="col">Cliente</th>
+                      <th scope="col">Data</th>
+                      <th scope="col">Forma de Pagamento</th>
+                      <th scope="col">Total</th>
+                  </tr>
+
+        {% for pedido in pedidos %}
+
+            <div>
+                     <tr>
+                         <td>
+                             <a href="{% url 'pedido:resumo' id=pedido.id %}">{{pedido.id|formata_numero_pedido}}</a>
+                         </td>
+                         <td>{{pedido.cliente}}</td>
+                         <td>{{ pedido.data | date:"d/m/Y"}} {{ pedido.data | date:"H:i" }}</td>
+                         <td>{{ pedido.forma_pagamento}}</td>
+                         <td>{{ pedido.total|formata_preco }}</td>
+                    </tr>
+
+            </div>
+
+             {% endfor %}
+        </table>
+
+    {% else %}
+        <br>
+        <h4 style="text-align: center; font-size: 35px"> {{ vendedor.get_full_name }} não realizou nenhuma venda </h4>
+        <br>
+    {% endif %}
+
+{% endblock %}

@@ -80,12 +80,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <!-- menu do cliente quando logar -->
                     <li class="text-center border-right text-white" style="">
-                        <a href="{% url 'pedido:lista' %}" class="text-white">
+                        <a href="" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Pedidos </a>
                     </li>
 
                     <li class="text-center border-right text-white">
-                        <a href="{% url 'Logout' %}" class="text-white">
+                        <a href="{% url 'logout' %}" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Sair </a>
                     </li>
 
@@ -286,7 +286,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
             // Count the number of each item in the cart
             for (i = 0; i < len; i++) {
-                total += items[i].get('quantity');
+                total += items[i].get('quantidade');
             }
 
         });
