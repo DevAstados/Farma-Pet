@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load omFilters %}
+{% block conteudo %}
+
+
+    <!-- Single Page -->
+    <div class="banner-bootom-w3-agileits py-5">
+        <div class="container py-xl-4 py-lg-2">
+            <!-- tittle heading -->
+            <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3"/>
+
+            <!-- //tittle heading -->
+            <div class="row">
+                <div class="col-lg-5 col-md-8 single-right-left ">
+                    <div class="grid images_3_of_2">
+                        <div class="flexslider">
+                                    <div class="thumb-image">
+                                        <img src="{{ object.imagem.full.url }} " data-imagezoom="true" class="img-fluid"
+                                             alt=""></div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 single-right-left simpleCart_shelfItem">
+                    <h2 class="mb-3">{{ object }}</h2>
+                    <p class="mb-3">
+
+                    <h3 style="font-size: 15px; text-align: center ">Cód. {{ object.id|formata_codigo_produto }}</h3>
+                    <br />
+
+                        {% if object.preco_promocional %}
+                            <span class="item_price">{{ object.preco_promocional|formata_preco }}</span>
+                            <del>
+                                {{ object.preco|formata_preco }}</del>
+                        {% else %}
+                            <span class="item_price">{{ object.preco|formata_preco }}</span>
+
+                        {% endif %}
+                    </p>
+                    <br />
+
+                    <div class="single-infoagile" >
+                            <ul>
+                                <li class="mb-3">
+                                    {% autoescape on %}
+                                       <h4 style="font-size: 22px">{{ object.descricao|safe }}</h4>
+                                    {% endautoescape %}
+                                    <br />
+
+                                    {% if object.largura != None or object.altura != None or object.comprimento != None  or object.material != None%}
+
+                                        <h5 class="mb-2">
+                                            <span style="font-weight: bold; font-size:20px; color: #0b0b0b">Medidas</span>
+                                        </h5>
+
+                                        {% if object.comprimento != None %}
+                                            <h5 style="font-weight: bold; font-size: 18px; color: #0b0b0b;  text-align: center">
+                                                Comprimento: {{ object.comprimento }} cm
+                                            </h5>
+                                        {% endif %}
+
+                                        {% if object.largura != None %}
+                                            <h5 style="font-weight: bold; font-size: 18px; color: #0b0b0b;  text-align: center">
+                                                Largura: {{ object.largura }} cm
+                                            </h5>
+                                        {% endif %}
+
+                                        {% if object.altura != None %}
+                                            <h5 style="font-weight: bold; font-size: 18px; color: #0b0b0b;  text-align: center">
+                                                Altura: {{ object.altura }} cm
+                                            </h5>
+                                        {% endif %}
+
+                                        {% if object.material != None %}
+                                            <h5 style="font-weight: bold; font-size: 18px; color: #0b0b0b;  text-align: center">
+                                                Material: {{ object.material }} 
+                                            </h5>
+                                        {% endif %}
+
+                                    {% endif %}
+                                </li>
+
+                            </ul>
+                    </div>
+
+                    <div class="occasion-cart">
+                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out" style="margin: 10%; width: 80%">
+                            <form action="#" method="post">
+                                <fieldset>
+                                    <input type="hidden" name="cmd" value="_cart"/>
+                                    <input type="hidden" name="add" value="1"/>
+                                    <input type="hidden" name="id" value="{{ object.id }}"/>
+                                    <input type="hidden" name="imagem" value="{{ object.imagem.thumbnail.url }}"/>
+                                    <input type="hidden" name="cor" value="{{ object.cor }}"/>
+                                    <input type="hidden" name="material" value="{{ object.material }}"/>
+                                    <input type="hidden" name="largura" value="{{ object.largura }}"/>
+                                    <input type="hidden" name="altura" value="{{ object.altura }}"/>
+                                    <input type="hidden" name="comprimento" value="{{ object.comprimento }}"/>
+
+                                    <input type="hidden" name="business" value=" "/>
+                                    <input type="hidden" name="item_name"
+                                           value="{{ object.nome }}"/>
+
+                                    {% if object.preco_promocional > 0 %}
+
+                                        <input type="hidden" name="amount"
+                                               value="{{ object.preco|formata_preco }}"/>
+                                        <input type="hidden" name="discount_amount"
+                                               value="{{ object.getDesconto|formata_preco }}    "/>
+
+                                    {% else %}
+                                        <input type="hidden" name="amount"
+                                               value="{{ object.preco|formata_preco }}"/>
+                                        <input type="hidden" name="discount_amount"
+                                               z value="0,00"/>
+                                    {% endif %}
+
+
+                                    <input type="hidden" name="currency_code"
+                                           value="BRL"/>
+                                    <input type="hidden" name="return" value=" "/>
+                                    <input type="hidden" name="cancel_return"
+                                           value=" "/>
+                                    <input type="submit" name="submit" value="Adicionar"
+                                           class="button btn"/>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock conteudo %}
+
+{% block scripts %}
+
+{% endblock scripts %}

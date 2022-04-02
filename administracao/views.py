@@ -71,12 +71,6 @@ class listagem_pedido(ListView):
         return context
 
 
-class adicionar_produto(CreateView):
-    model = Produto
-    fields = ['nome', 'descricao', 'quantidade', 'imagem', 'preco', 'preco_promocional', 'categoria', 'especificacoes',
-              'marca']
-    template_name = 'adicionar_produto.html'
-    success_url = reverse_lazy('listagem_produto')
 
 
 class adicionar_produto(CreateView):
@@ -197,8 +191,10 @@ def excluirProduto(request, id):
 def excluirFuncionario(request, id):
     if request.method == 'GET':
         funcionario = get_object_or_404(Funcionario, pk=id)
-        get_object_or_404(Usuario, pk=funcionario.usuario.pk).delete()
+        usuario = get_object_or_404(Usuario, pk=funcionario.usuario.pk)
+
         funcionario.delete()
+        usuario.delete()
         return redirect('listagem_funcionario')
 
 def login(request):

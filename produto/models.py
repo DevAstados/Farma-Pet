@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 # Create your models here.
+from django.urls import reverse
 from stdimage import StdImageField
 
 
@@ -89,6 +90,16 @@ class Produto(models.Model):
     especificacoes = models.ForeignKey(Especificacoes, models.DO_NOTHING)
     marca = models.ForeignKey(Marca, models.DO_NOTHING)
 
+    def __str__(self):
+        return self.nome
+
+    def get_absolute_url(self):
+        return reverse("produtos:detalhe", kwargs={"slug": self.slug})
+
+    def getDesconto(self):
+        if self.preco_promocional:
+            return self.preco - self.preco_promocional
+
     @classmethod
     def popular(cls, json, categoria=None, marca=None, especificacoes=None):
         produto = Produto()
@@ -126,3 +137,32 @@ class Produto(models.Model):
                 produto.preco_promocional = json['preco_promocional']
 
         return produto
+    @classmethod
+    def split(cls, lista, tamanho):
+        return [lista[i:i + tamanho] for i in range(0, len(lista), tamanho)]
+
+    @classmethod
+    def getListProdutInColun(cls, categoria=None, nome_produto=None):
+        listProduct = []
+
+        if categoria is None:
+            if nome_produto is None:
+                listProduct = Produto.objects.all()
+            else:
+
+                for produto in Produto.objects.filter(nome__contains=nome_produto):
+                    listProduct.append(produto)
+
+        else:
+            if nome_produto is not None:
+                for produto in Produto.objects.filter(categoria=categoria, nome__contains=nome_produto):
+                    listProduct.append(produto)
+            else:
+
+                for produto in Produto.objects.filter(categoria=categoria):
+                    listProduct.append(produto)
+
+        if listProduct.__len__() < 1:
+            return None
+
+        return Produto.split(listProduct, 3)
