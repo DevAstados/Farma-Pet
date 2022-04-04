@@ -9,16 +9,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 
-from cliente.models import Cliente
+from cliente.models import Cliente, Endereco
 from usuario.models import CustomUser
 
-
-class CreateUserGoogle(View):
-    def get(self):
-        pass
-
-    def post(self):
-        pass
 
 
 class verificacao(View):
@@ -27,19 +20,26 @@ class verificacao(View):
         try:
 
             cliente = Cliente.objects.get(usuario_id=usuario.pk)
-
         except Cliente.DoesNotExist:
             usuario.tipo_usuario = 'C'
             usuario.save()
             print('nao tem cliente')
             return HttpResponseRedirect(reverse_lazy('usuario:cadastro_cliente'))
+        try:
+            endereco = Endereco.objects.get(cliente=cliente)
+            print(endereco)
+        except Endereco.DoesNotExist:
+            print('Cliente não tem endereço')
+
+            return HttpResponseRedirect(reverse_lazy('usuario:cadastro_endereco'))
+
 
 
 class login_cliente(View):
     def get(self, request, *args, **kwargs):
         template_name = 'login.html'
-
-        return render(request, template_name, context=None)
+        context = {}
+        return render(request, template_name, context=context)
 
     def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
@@ -59,14 +59,15 @@ class login_cliente(View):
 
         auth.login(request, user=usuario)
 
-        return redirect('home')
+        return redirect(reverse_lazy('home'))
 
 
 class cadastro_cliente(View):
     def get(self, request, *args, **kwargs):
         template_name = 'cadastro.html'
-
-        return render(request, template_name, context=None)
+        context = {}
+        context['usuario'] = request.user
+        return render(request, template_name, context=context)
 
     def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
@@ -82,3 +83,21 @@ class cadastro_cliente(View):
         usuario.last_name = cliente.sobrenome
         usuario.save()
         cliente.save()
+
+        return redirect(reverse_lazy('usuario:cadastro_endereco'))
+
+class cadastro_endereco(View):
+    def get(self, request, *args, **kwargs):
+        template_name = 'cadastro_endereco.html'
+        context = {}
+
+        return render(request, template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
+        requestJson = json.loads(requestJson)
+        cliente = Cliente.objects.get(usuario_id=request.user.pk)
+        endereco = Endereco.populaEndereco(requestJson,cliente)
+        endereco.save()
+
+        return redirect(reverse_lazy('home'))

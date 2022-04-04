@@ -87,8 +87,8 @@ class Endereco(models.Model):
     def populaEndereco(cls, form, cliente):
         endereco = Endereco()
 
-        endereco.tipo = form['tipo_endereco']
-        endereco.numero = form['numero_casa']
+        endereco.tipo = form['tip_endereco']
+        endereco.numero = form['numero']
         endereco.complemento = form['complemento']
         endereco.cep = form['cep']
         endereco.cliente = cliente

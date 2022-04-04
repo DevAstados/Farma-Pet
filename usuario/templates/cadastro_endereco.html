@@ -48,56 +48,52 @@
                         <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
                     {% endfor %}
                 </div>
-                <form action="{% url 'usuario:cadastro_cliente' %}" method="post" id="form_login">
+                <form action="{% url 'usuario:cadastro_endereco' %}" method="post" id="form_login">
                     {% csrf_token %}
-
-
                     <div class="form-group row">
-                        <label for="nome" class="col-4 col-form-label">Nome completo</label>
+                        <label for="cep" class="col-4 col-form-label">CEP</label>
                         <div class="col-8">
-                            <input id="nome" name="nome" type="text" class="form-control">
+                            <input id="cep" name="cep" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="cpf" class="col-4 col-form-label">CPF</label>
+                        <label for="rua" class="col-4 col-form-label">Rua</label>
                         <div class="col-8">
-                            <input id="cpf" name="cpf" type="text" class="form-control">
+                            <input id="rua" name="rua" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="celular" class="col-4 col-form-label">Cel.</label>
+                        <label for="numero" class="col-4 col-form-label">Numero</label>
+                        <div class="col-3">
+                            <input id="numero" name="numero" type="number" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="complemento" class="col-4 col-form-label">Complemento</label>
                         <div class="col-8">
-                            <input id="celular" name="celular" type="text" class="form-control">
+                            <input id="complemento" name="complemento" type="text" class="form-control">
                         </div>
                     </div>
-                    {% if not usuario %}
-
-                        <div class="form-group row">
-                            <label class="col-4 col-form-label" for="login">Login</label>
-                            <div class="col-4">
-                                <input id="login" name="login" type="text" class="form-control">
-                            </div>
-                        </div>
-
                     <div class="form-group row">
-                        <label for="email" class="col-4 col-form-label">Email</label>
+                        <label for="Bairro" class="col-4 col-form-label">Bairro</label>
                         <div class="col-8">
-                            <input id="email" name="email" type="text" class="form-control">
+                            <input id="Bairro" name="Bairro" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-4 col-form-label" for="senha">Senha</label>
-                        <div class="col-6">
-                            <input id="senha" name="senha" type="password" class="form-control">
+                        <label for="tip_endereco" class="col-4 col-form-label">Tipo do Endereço</label>
+                        <div class="col-8">
+                            <input id="tip_endereco" name="tip_endereco" type="text" class="form-control">
                         </div>
                     </div>
-                    {% endif %}
-                    <div class="right-w3l">
-                        <input type="submit" class="form-control" value="Proximo">
+                    <div class="form-group row">
+                        <div class="offset-4 col-8">
+                            <button name="submit" type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
                     </div>
-
-
                 </form>
+
+
             </div>
         </div>
     </div>
