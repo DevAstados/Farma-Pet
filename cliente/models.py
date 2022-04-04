@@ -4,9 +4,7 @@ from pycep_correios import get_address_from_cep, WebService, exceptions
 
 import re
 
-
-
-
+from usuario.models import CustomUser
 from utils import validacpf
 
 class Cliente(models.Model):
@@ -15,6 +13,9 @@ class Cliente(models.Model):
     sobrenome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=11, unique=True)
     telefone = models.CharField(max_length=11)
+    usuario = models.ForeignKey(CustomUser, models.CASCADE)
+
+
 
     @classmethod
     def validacao(cls, cliente):

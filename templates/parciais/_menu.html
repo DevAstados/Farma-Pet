@@ -116,12 +116,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'adm:login' %}" method="post">
+                     <div class="messages" style="color: red; text-align: center" >
+                    {% for message in messages %}
+                        <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+                    {% endfor %}
+                </div>
+                    <form action="{% url 'usuario:login_cliente' %}" method="post">
                         {% csrf_token %}
 
                         <div class="form-group">
                             <label class="col-form-label">Usuário</label>
-                            <input type="text" class="form-control" placeholder=" " name="user" required="" id="user">
+                            <input type="text" class="form-control" placeholder=" " name="username" required="" id="username">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Senha</label>

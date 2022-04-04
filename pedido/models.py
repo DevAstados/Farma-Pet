@@ -2,7 +2,8 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
-from cliente.models import Cliente
+from cliente.models import Cliente, Endereco
+from funcionario.models import Funcionario
 from produto.models import Produto
 
 
@@ -39,10 +40,9 @@ class Pedido(models.Model):
     frete = models.FloatField(null=True)
     codigo_rastreio = models.CharField(unique=True, max_length=50, blank=True, null=True)
     notal_fiscal = models.CharField(max_length=70, blank=True, null=True)
-    vendedor = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    '''
+    vendedor = models.ForeignKey(Funcionario, on_delete=models.DO_NOTHING)
     endereco_entrega = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING)
-    '''
+
     def _str_(self):
         return f' N. {self.pk}.zfill(6)'
 

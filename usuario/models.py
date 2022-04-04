@@ -1,34 +1,60 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import User
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import User, PermissionsMixin, AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
-# Create your models here.
-class Usuario(models.Model):
-    login = models.CharField(max_length=30)
-    senha = models.CharField(max_length=30)
-    email = models.CharField(max_length=250)
+class CustomUserManager(BaseUserManager):
+    """
+    Custom user model manager where email is the unique identifiers
+    for authentication instead of usernames.
+    """
+
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Create and save a User with the given email and password.
+        """
+        if not email:
+            raise ValueError(_('The Email must be set'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        """
+        Create and save a SuperUser with the given email and password.
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+        return self.create_user(email, password, **extra_fields)
 
 
-    @classmethod
-    def popular(cls, json):
-        usuario = Usuario()
-        usuario.login = json['login']
-        usuario.email = json['email']
-        usuario.senha = json['senha']
+class Tipo_usuario():
+    USUARIO_CHOICES = (
+        ('C', 'Cliente'),
+        ('F', 'Funcionario'),
+    )
 
-        return usuario
 
-    @classmethod
-    def popularalteracao(cls, json,usuario):
-        if usuario.login != json['login']:
-            usuario.login = json['login']
+class CustomUser(AbstractUser):
+    email = models.EmailField(_('email address'), unique=True)
+    username = models.CharField(max_length=30, unique=True, null=False)
+    tipo_usuario = models.CharField(max_length=1, choices=Tipo_usuario.USUARIO_CHOICES, null=False)
 
-        if usuario.email != json['email']:
-            usuario.email = json['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
-        if usuario.senha != json['senha']:
+    objects = CustomUserManager()
 
-            usuario.senha = json['senha']
+    def __str__(self):
+        return self.email
 
-        return usuario
