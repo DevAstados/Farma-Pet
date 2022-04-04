@@ -1,12 +1,13 @@
 import json
 
+from social_django.models import UserSocialAuth
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 
 from utils import enviar_email
@@ -24,16 +25,12 @@ class verificacao(View):
         except Cliente.DoesNotExist:
             usuario.tipo_usuario = 'C'
             usuario.save()
-            print('nao tem cliente')
             return HttpResponseRedirect(reverse_lazy('usuario:cadastro_cliente'))
         try:
             endereco = Endereco.objects.get(cliente=cliente)
-            print(endereco)
         except Endereco.DoesNotExist:
-            print('Cliente não tem endereço')
-
             return HttpResponseRedirect(reverse_lazy('usuario:cadastro_endereco'))
-
+        return redirect(reverse_lazy('home'))
 
 
 class login_cliente(View):
@@ -110,3 +107,9 @@ class cadastro_endereco(View):
 
 
         return redirect(reverse_lazy('home'))
+
+
+def Logout(request):
+    if request.method == 'GET':
+        auth.logout(request)
+        return redirect('home')

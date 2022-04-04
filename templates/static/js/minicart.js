@@ -1975,7 +1975,7 @@
 
             parent: (typeof document !== 'undefined') ? document.body : null,
 
-            action: `${window.location.origin}/pedido/fecharpedido`,
+            action: `${window.location.origin}/`,
 
             target: '',
 
@@ -2115,8 +2115,44 @@
             desconto: function (value) {
                 return parseFloat(value) || 0;
             },
+            cor: function (value) {
+                if (value) {
+                    return value;
+                } else {
+                    return (typeof window !== 'undefined') ? window.location.href : null;
+                }
+            },
+            material: function (value) {
+                if (value) {
+                    return value;
+                } else {
+                    return (typeof window !== 'undefined') ? window.location.href : null;
+                }
+            },
+            largura: function (value) {
+                if (value) {
+                    return value;
+                } else {
+                    return (typeof window !== 'undefined') ? window.location.href : null;
+                }
+            },
+            altura: function (value) {
+                if (value) {
+                    return value;
+                } else {
+                    return (typeof window !== 'undefined') ? window.location.href : null;
+                }
+            },
+            comprimento: function (value) {
+                if (value) {
+                    return value;
+                } else {
+                    return (typeof window !== 'undefined') ? window.location.href : null;
+                }
+            },
 
-            quantidade: function (value) {
+
+            quantity: function (value) {
                 value = parseInt(value, 10);
 
                 if (isNaN(value) || !value) {
@@ -2125,7 +2161,7 @@
 
                 return value;
             },
-            preco: function (value) {
+            amount: function (value) {
                 return parseFloat(value) || 0;
             },
 
@@ -2142,10 +2178,9 @@
         function Product(data) {
             data.id = parser.id(data.id)
             data.imagem = parser.imagem(data.imagem)
-
             data.desconto = parser.desconto(data.desconto)
-            data.quantidade = parser.quantidade(data.quantidade);
-            data.preco = parser.preco(data.preco);
+            data.quantity = parser.quantity(data.quantity);
+            data.amount = parser.amount(data.amount);
 
             this._data = data;
             this._options = null;

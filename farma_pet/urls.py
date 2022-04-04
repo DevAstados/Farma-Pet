@@ -33,7 +33,7 @@ urlpatterns = [
                   path('funcionario/', include('funcionario.urls')),
                   path('usuario/', include('usuario.urls')),
                   path('__debug__/', include(debug_toolbar.urls)),
-path('admin/', admin.site.urls),
+                  path('admin/', admin.site.urls),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 '''                  path('admin/', admin.site.urls),

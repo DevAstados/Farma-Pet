@@ -15,7 +15,8 @@ class Categoria(models.Model):
         cat = Categoria()
         cat.nome = nome
         return cat
-
+    def __str__(self):
+        return self.nome
 
 class Marca(models.Model):
     nome = models.CharField(max_length=50)
@@ -26,6 +27,8 @@ class Marca(models.Model):
         cat.nome = nome
         return cat
 
+    def __str__(self):
+        return self.nome
 
 class Especificacoes(models.Model):
     indicacao = models.CharField(max_length=30, blank=True, null=True)

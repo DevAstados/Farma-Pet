@@ -110,10 +110,10 @@
 
                                                                 {% if produto.preco_promocional > 0 %}
 
-                                                                    <input type="hidden" name="preco"
+                                                                    <input type="hidden" name="amount"
                                                                            value="{{ produto.preco_promocional }}"/>
 
-                                                                    <input type="hidden" name="desconto"
+                                                                    <input type="hidden" name="amount"
                                                                            value="{{ produto.getDesconto }}"/>
 
                                                                 {% else %}
