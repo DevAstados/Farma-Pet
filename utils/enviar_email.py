@@ -37,7 +37,7 @@ def sending(email):
 
 
 
-
+'''
 def sendng(pedido, items, endereco):
     context = ssl.create_default_context()
 
@@ -60,3 +60,4 @@ def modelaEmail(pedido, items, endereco):
     msg.add_alternative(render_to_string('modelo_email.html', {'pedido': pedido, 'items': items, 'endereco': endereco}), subtype='html')
 
     return msg
+'''
