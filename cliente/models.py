@@ -49,12 +49,13 @@ class Cliente(models.Model):
         return cls.nome, ""
 
     @classmethod
-    def popular_cliente(cls, form):
+    def popular_cliente(cls, form, usuario):
         cliente = Cliente()
         cliente.nome, cliente.sobrenome = Cliente.splitNome(form['nome'])
-        cliente.telefone = re.sub('[^0-9]', '',  form['numero_telefone'])
+        cliente.telefone = re.sub('[^0-9]', '',  form['celular'])
         cliente.email = form['email']
         cliente.cpf = re.sub('[^0-9]', '', form['cpf'])
+        cliente.usuario = usuario
 
         return cliente
 

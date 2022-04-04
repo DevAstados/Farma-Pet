@@ -59,7 +59,15 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-
     def __str__(self):
         return self.email
 
+    @classmethod
+    def popular(cls,json, tipo_usuario='C'):
+        usuario = CustomUser()
+        usuario.username = json['']
+        usuario.email = json['']
+        usuario.set_password(json[''])
+        usuario.tipo_usuario = tipo_usuario
+
+        return  usuario
