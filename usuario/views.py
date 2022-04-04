@@ -9,6 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 
+from utils import enviar_email
 from cliente.models import Cliente, Endereco
 from usuario.models import CustomUser
 
@@ -64,7 +65,7 @@ class login_cliente(View):
 
 class cadastro_cliente(View):
     def get(self, request, *args, **kwargs):
-        template_name = 'cadastro.html'
+        template_name = 'cadastro_cliente.html'
         context = {}
         context['usuario'] = request.user
         return render(request, template_name, context=context)
@@ -73,7 +74,7 @@ class cadastro_cliente(View):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
 
-        if not request.user:
+        if not request.user.is_authenticated:
             usuario = CustomUser.popular(requestJson, tipo_usuario='C')
         else:
             usuario = request.user
@@ -81,8 +82,15 @@ class cadastro_cliente(View):
         cliente = Cliente.popular_cliente(requestJson, usuario)
         usuario.first_name = cliente.nome
         usuario.last_name = cliente.sobrenome
+
+        enviar_email.sending(cliente.email)
+
         usuario.save()
         cliente.save()
+        usuario.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth.login(request, user=usuario)
+
+
 
         return redirect(reverse_lazy('usuario:cadastro_endereco'))
 
@@ -99,5 +107,6 @@ class cadastro_endereco(View):
         cliente = Cliente.objects.get(usuario_id=request.user.pk)
         endereco = Endereco.populaEndereco(requestJson,cliente)
         endereco.save()
+
 
         return redirect(reverse_lazy('home'))

@@ -65,9 +65,9 @@ class CustomUser(AbstractUser):
     @classmethod
     def popular(cls,json, tipo_usuario='C'):
         usuario = CustomUser()
-        usuario.username = json['']
-        usuario.email = json['']
-        usuario.set_password(json[''])
+        usuario.username = json['login']
+        usuario.email = json['email']
+        usuario.set_password(json['senha'])
         usuario.tipo_usuario = tipo_usuario
 
         return  usuario
