@@ -5,7 +5,7 @@ from usuario.models import CustomUser
 
 
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ['username',]
+    list_display = ['email',]
 
 
 

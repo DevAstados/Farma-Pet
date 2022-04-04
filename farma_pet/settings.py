@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+# Used by SettingsBackend
+ADMIN_LOGIN = 'admin'
+ADMIN_PASSWORD = 'pbkdf2_sha256$36000$9pA3fTzM4yL9$whatever'
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,6 +55,8 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'usuario.auth.SettingsBackend',
+
 ]
 
 MIDDLEWARE = [

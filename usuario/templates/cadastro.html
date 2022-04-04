@@ -48,7 +48,7 @@
                         <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
                     {% endfor %}
                 </div>
-                <form action="{% url 'usuario:login_cliente' %}" method="post" id="form_login">
+                <form action="{% url 'usuario:cadastro_cliente' %}" method="post" id="form_login">
                     {% csrf_token %}
 
                     <div class="form-group">

@@ -69,11 +69,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 {% if not request.user.is_authenticated %}
 
                     <li class="text-center border-right text-white">
-                        <a href="#" data-toggle="modal" data-target="#login" class="text-white">
+                        <a href="{% url 'usuario:login_cliente' %}" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Entre </a>
                     </li>
                     <li class="text-center border-right text-white">
-                        <a href="." class="text-white">
+                        <a href="{% url 'usuario:cadastro_cliente' %}" class="text-white">
                             <i class="fas fa-registered mr-2"></i> Cadastro </a>
                     </li>
                 {% else %}
