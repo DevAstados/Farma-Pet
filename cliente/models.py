@@ -4,9 +4,7 @@ from pycep_correios import get_address_from_cep, WebService, exceptions
 
 import re
 
-
-
-
+from usuario.models import CustomUser
 from utils import validacpf
 
 class Cliente(models.Model):
@@ -15,6 +13,9 @@ class Cliente(models.Model):
     sobrenome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=11, unique=True)
     telefone = models.CharField(max_length=11)
+    usuario = models.ForeignKey(CustomUser, models.CASCADE)
+
+
 
     @classmethod
     def validacao(cls, cliente):
@@ -48,12 +49,13 @@ class Cliente(models.Model):
         return cls.nome, ""
 
     @classmethod
-    def popular_cliente(cls, form):
+    def popular_cliente(cls, form, usuario):
         cliente = Cliente()
         cliente.nome, cliente.sobrenome = Cliente.splitNome(form['nome'])
-        cliente.telefone = re.sub('[^0-9]', '',  form['numero_telefone'])
+        cliente.telefone = re.sub('[^0-9]', '',  form['celular'])
         cliente.email = form['email']
         cliente.cpf = re.sub('[^0-9]', '', form['cpf'])
+        cliente.usuario = usuario
 
         return cliente
 
@@ -85,8 +87,8 @@ class Endereco(models.Model):
     def populaEndereco(cls, form, cliente):
         endereco = Endereco()
 
-        endereco.tipo = form['tipo_endereco']
-        endereco.numero = form['numero_casa']
+        endereco.tipo = form['tip_endereco']
+        endereco.numero = form['numero']
         endereco.complemento = form['complemento']
         endereco.cep = form['cep']
         endereco.cliente = cliente

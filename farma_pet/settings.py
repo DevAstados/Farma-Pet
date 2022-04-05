@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+# Used by SettingsBackend
+ADMIN_LOGIN = 'admin'
+ADMIN_PASSWORD = 'pbkdf2_sha256$36000$9pA3fTzM4yL9$whatever'
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,6 +55,8 @@ INSTALLED_APPS = [
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'usuario.auth.SettingsBackend',
+
 ]
 
 MIDDLEWARE = [
@@ -61,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+'social_django.middleware.SocialAuthExceptionMiddleware',
 
 ]
 INTERNAL_IPS = [
@@ -92,14 +100,15 @@ TEMPLATES = [
 
 ]
 LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/usuario/verificacao/'
 LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
 SESSION_COOKIE_SECURE = False
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+AUTH_USER_MODEL = 'usuario.CustomUser'
+SOCIAL_AUTH_USER_MODEL = 'usuario.CustomUser'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '764702572075-003se1mn0fldlv2tmrqmj8a67a2dlvhp.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 'https://www.googleapis.com/auth/userinfo.email',
 'https://www.googleapis.com/auth/userinfo.profile'
@@ -113,7 +122,7 @@ WSGI_APPLICATION = 'farma_pet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'farma_pet',
+        'NAME': 'farma_pet2',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
