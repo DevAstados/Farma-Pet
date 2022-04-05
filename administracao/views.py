@@ -12,7 +12,7 @@ from django.views.generic import ListView, CreateView, UpdateView
 from funcionario.models import Funcionario
 from produto.forms import FormProduto
 from produto.models import Produto, Categoria, Marca, Especificacoes
-from usuario.models import Usuario
+from usuario.models import CustomUser
 
 
 class listagem_produto(ListView):
@@ -118,13 +118,13 @@ class adicionar_funcionario(CreateView):
     def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
-        usuario = Usuario.popular(requestJson)
+        #usuario = Usuario.popular(requestJson)
 
-        funcionario = Funcionario.popular(requestJson,usuario)
-        Usuario.save(usuario)
+        funcionario = Funcionario.popular(requestJson,usuario=None)
+        #Usuario.save(usuario)
         Funcionario.save(funcionario)
 
-        return redirect('listagem_funcionario')
+        return redirect('adm:listagem_funcionario')
 
 
 class update_produto(View):
@@ -166,11 +166,11 @@ class update_funcionario(View):
         requestJson = json.loads(requestJson)
 
         funcionario = get_object_or_404(Funcionario, pk=self.kwargs['id'])
-        usuario = get_object_or_404(Usuario, pk=funcionario.usuario.pk)
+        usuario = get_object_or_404(CustomUser, pk=funcionario.usuario.pk)
 
         funcionario = Funcionario.popularAlteracao(requestJson, funcionario)
-        usuario = Usuario.popularalteracao(requestJson,usuario)
-        Usuario.save(usuario)
+        #usuario = CustomUser.popularalteracao(requestJson,usuario)
+        #Usuario.save(usuario)
         Funcionario.save(funcionario)
 
         return redirect('listagem_funcionario')
@@ -191,15 +191,17 @@ def excluirProduto(request, id):
 def excluirFuncionario(request, id):
     if request.method == 'GET':
         funcionario = get_object_or_404(Funcionario, pk=id)
-        usuario = get_object_or_404(Usuario, pk=funcionario.usuario.pk)
+        usuario = get_object_or_404(CustomUser, pk=funcionario.usuario.pk)
 
         funcionario.delete()
         usuario.delete()
         return redirect('listagem_funcionario')
 
 def login(request):
-    pass
+    print('teste')
 
+def cadastrado_google(request):
+    print(request.user.password)
 
 def Logout(request):
     if request.method == 'GET':

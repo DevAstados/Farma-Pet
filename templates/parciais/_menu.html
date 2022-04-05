@@ -10,7 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
     {% load static %}
 
-    <title>{% block titulo %} Silpan  {% endblock titulo %}</title>
+    <title>{% block titulo %} Farma Pet  {% endblock titulo %}</title>
     <!-- Meta tag Keywords -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8"/>
@@ -69,11 +69,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 {% if not request.user.is_authenticated %}
 
                     <li class="text-center border-right text-white">
-                        <a href="#" data-toggle="modal" data-target="#login" class="text-white">
+                        <a href="{% url 'usuario:login_cliente' %}" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Entre </a>
                     </li>
                     <li class="text-center border-right text-white">
-                        <a href="." class="text-white">
+                        <a href="{% url 'usuario:cadastro_cliente' %}" class="text-white">
                             <i class="fas fa-registered mr-2"></i> Cadastro </a>
                     </li>
                 {% else %}
@@ -85,7 +85,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </li>
 
                     <li class="text-center border-right text-white">
-                        <a href="{% url 'logout' %}" class="text-white">
+                        <a href="{% url 'usuario:logout' %}" class="text-white">
                             <i class="fas fa-sign-in-alt mr-2"></i> Sair </a>
                     </li>
 
@@ -116,18 +116,31 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'login' %}" method="post">
+                     <div class="messages" style="color: red; text-align: center" >
+                    {% for message in messages %}
+                        <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+                    {% endfor %}
+                </div>
+                    <form action="{% url 'usuario:login_cliente' %}" method="post">
                         {% csrf_token %}
 
                         <div class="form-group">
                             <label class="col-form-label">Usuário</label>
-                            <input type="text" class="form-control" placeholder=" " name="user" required="" id="user">
+                            <input type="text" class="form-control" placeholder=" " name="username" required="" id="username">
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Senha</label>
                             <input type="password" class="form-control" placeholder=" " name="password" required=""
                                    id="password">
                         </div>
+
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-google"></i>
+                            <a class="white" href="{% url 'social:begin' 'google-oauth2'  %} ">
+                                Login com Google
+                            </a>
+                        </button>
+
                         <div class="right-w3l">
                             <input type="submit" class="form-control" value="Entrar">
                         </div>
@@ -231,6 +244,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- //navigation -->
     {% block conteudo %}
     {% endblock conteudo %}
+    {% block script %}
+
 
     <!-- js-files -->
     <!-- jquery -->
@@ -359,5 +374,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="{% static 'js/bootstrap.js' %} "></script>
     <!-- //for bootstrap working -->
     <!-- //js-files -->
+{% endblock script %}
 </body>
 </html>

@@ -4,6 +4,7 @@ from django.urls import path
 
 
 from administracao import views
+app_name = 'adm'
 
 urlpatterns = [
                   path('login/', views.login, name='login'),

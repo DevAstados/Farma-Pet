@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    {% load static %}
+
+    <title>{% block titulo %} Farma Pet  {% endblock titulo %}</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8"/>
+    <meta name="keywords" content=""/>
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- //Meta tag Keywords -->
+
+    <!-- Custom-Files -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- Bootstrap css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.css' %}">
+    <!-- Font-Awesome-Icons-CSS -->
+
+
+</head>
+
+<div id="login" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-title">
+                <hr>
+                <h5 style="font-size: 30px; color: #050505; text-align: center ">Farma Pet </h5>
+                <hr>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="messages" style="color: red; text-align: center" >
+                    {% for message in messages %}
+                        <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>
+                    {% endfor %}
+                </div>
+                <form action="{% url 'usuario:login_cliente' %}" method="post" id="form_login">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label class="col-form-label">Usuário</label>
+                        <input type="text" class="form-control" placeholder=" " name="username" required="" id="username"
+                               minlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Senha</label>
+                        <input type="password" class="form-control" placeholder=" " name="password" required=""
+                               id="password" minlength="4">
+                    </div>
+                    <div class="right-w3l">
+                        <input type="submit" class="form-control" value="Entrar">
+                    </div>
+                      <button type="button" class="btn btn-light" >
+                            <i class="fa fa-google"></i>
+                            <a class="white" href="{% url 'social:begin' 'google-oauth2'  %} ">
+                                Login com Google
+                            </a>
+                        </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

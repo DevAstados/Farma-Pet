@@ -20,16 +20,21 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+import administracao.views
 import produto.views
 
 urlpatterns = [
-                  path('', produto.views.home.as_view(),  name='home'),
-                  path('<categoria>', produto.views.home.as_view(),  name='listagem_produto'),
-
+                  path('', produto.views.home.as_view(), name='home'),
+                  path('cadastrado/', administracao.views.cadastrado_google, name='cadast'),
+                  path('<categoria>', produto.views.home.as_view(), name='listagem_produto'),
+                  path('social-auth/', include('social_django.urls', namespace='social-auth')),
                   path('administracao/', include('administracao.urls')),
                   path('produto/', include('produto.urls')),
                   path('funcionario/', include('funcionario.urls')),
+                  path('usuario/', include('usuario.urls')),
                   path('__debug__/', include(debug_toolbar.urls)),
+                  path('admin/', admin.site.urls),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-"""path('admin/', admin.site.urls),"""
+'''                  path('admin/', admin.site.urls),
+'''

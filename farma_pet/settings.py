@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+# Used by SettingsBackend
+ADMIN_LOGIN = 'admin'
+ADMIN_PASSWORD = 'pbkdf2_sha256$36000$9pA3fTzM4yL9$whatever'
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -26,7 +30,6 @@ SECRET_KEY = 'django-insecure-t^+bf=$n*cq+r^c@nhdmu#y5bbc_leu@g^9w(s6hzs4b#m7@k6
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -45,6 +48,14 @@ INSTALLED_APPS = [
     'usuario',
     'administracao',
     'pedido',
+    'social_django',
+
+]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'usuario.auth.SettingsBackend',
 
 ]
 
@@ -57,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+'social_django.middleware.SocialAuthExceptionMiddleware',
 
 ]
 INTERNAL_IPS = [
@@ -79,13 +91,30 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
+
     },
+
+]
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/usuario/verificacao/'
+LOGOUT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
+SESSION_COOKIE_SECURE = False
+AUTH_USER_MODEL = 'usuario.CustomUser'
+SOCIAL_AUTH_USER_MODEL = 'usuario.CustomUser'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '764702572075-003se1mn0fldlv2tmrqmj8a67a2dlvhp.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
 WSGI_APPLICATION = 'farma_pet.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -93,14 +122,13 @@ WSGI_APPLICATION = 'farma_pet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'farma_pet',
+        'NAME': 'farma_pet2',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -120,7 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -131,7 +158,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
