@@ -19,6 +19,8 @@ from usuario.models import CustomUser
 class verificacao(View):
     def get(self, request, *args, **kwargs):
         usuario = request.user
+        print(request.user.first_name)
+
         try:
 
             cliente = Cliente.objects.get(usuario_id=usuario.pk)
@@ -54,7 +56,6 @@ class login_cliente(View):
         elif usuario.tipo_usuario != 'C':
             messages.add_message(request, messages.ERROR, "Usuário não é cliente")
             return redirect(request.path_info)
-
         auth.login(request, user=usuario)
 
         return redirect(reverse_lazy('home'))

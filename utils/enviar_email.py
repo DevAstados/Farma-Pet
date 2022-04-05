@@ -13,17 +13,17 @@ from django.template.loader import get_template, render_to_string
 
 from farma_pet import settings
 
-
 CLIENT_SECRET_FILE = 'auth/client_secret.json'
 API_NAME = 'gmail'
 API_VERSION = 'v1'
 SCOPES = ['https://mail.google.com/']
 NAME_SITE = 'Farma Pet'
 
+
 def sending(email):
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
-    emailMsg = 'Cadastro realizado com sucesso na '  + NAME_SITE
+    emailMsg = 'Cadastro realizado com sucesso na ' + NAME_SITE
     mimeMessage = MIMEMultipart()
     mimeMessage['to'] = email
     mimeMessage['subject'] = 'Cadastro realizado'
@@ -32,9 +32,6 @@ def sending(email):
 
     message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
     print(message)
-
-
-
 
 
 '''
