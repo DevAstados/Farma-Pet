@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.sites import requests
+from django.core.exceptions import ValidationError
 from social_django.models import UserSocialAuth
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate
@@ -49,10 +50,17 @@ class login_cliente(View):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
 
+
         if requestJson['g-recaptcha-response'] == '':
             messages.error(request, 'Verifique o reCAPTCHA.')
             return redirect(request.path_info)
 
+        try:
+            s = FormWithCaptcha(request.POST)
+            s.fields['captcha'].validate(requestJson['g-recaptcha-response'])
+        except ValidationError as error:
+            messages.error(request, 'ReCAPTCHA inválido, por favor tente novamente!!.')
+            return redirect(request.path_info)
 
         usuario = CustomUser(email=requestJson['username'], tipo_usuario='C')
         usuario.set_password(requestJson['password'])
