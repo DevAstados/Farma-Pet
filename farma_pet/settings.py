@@ -177,3 +177,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+RECAPTCHA_PUBLIC_KEY = '<Sua PUBLIC_KEY>'
+RECAPTCHA_PRIVATE_KEY = '<Sua PRIVATE_KEY> '
