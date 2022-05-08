@@ -7,76 +7,20 @@
         <div class="container py-xl-4 py-lg-2">
             <!-- tittle heading -->
             <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
-                <span>A</span>dicionar detalhes da compra
+                <span>P</span>agamento
             </h3>
             <div class="messages" style="color: red; text-align: center">
                 {% for message in messages %}
                     <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a><br>
                 {% endfor %}
             </div>
-            <!-- Endereço-->
-            <div class="checkout-left">
-                <div class="address_form_agile mt-sm-5 mt-4">
-                    <form method="post" class="creditly-card-form agileinfo_form" id="form_cliente">
-                        {% csrf_token %}
-                        <div class="creditly-wrapper wthree, w3_agileits_wrapper">
-                            <div class="information-wrapper">
-                                <div class="first-row">
-                                    <input type="hidden" name="cadastro" value="False" id="cadastro">
-                                    <div class="controls form-group">
-                                        <input class="billing-address-name form-control" type="text" name="cpf"
-                                               placeholder="CPF" id="text_cpf" required="">
-                                    </div>
-                                    <div class="controls form-group">
-                                        <input class="billing-address-name form-control" type="text" name="nome"
-                                               placeholder="Nome Completo" id="text_nome" required="">
-                                    </div>
 
-                                    <div class="controls form-group">
-                                        <select class="option-w3ls" name="endereco" id="select_endereco">
-                                        </select>
-                                    </div>
-                                    <div class="w3_agileits_card_number_grids">
-                                        <div class="w3_agileits_card_number_grid_left form-group">
-                                            <div class="controls">
-                                                <input type="text" class="form-control" placeholder="Número de Telefone"
-                                                       name="numero_telefone" required="" id="text_telefone">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="controls form-group">
-                                        <select class="option-w3ls" name="forma_pagamento">
-                                            <option value="0">Tipo de Pagamento</option>
-                                            {% for Forma_pagamento in Forma_pagamentos %}
-                                                <option value="{{ Forma_pagamento.id }}">{{ Forma_pagamento }}</option>
-
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <button class="submit check_out btn" type="submit" id="pagamento_pedido"
-                                >Finalizar Pedido
-                                    <span class="far fa-hand-point-right"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
         </div>
     </div>
-    <!-- //Endereço-->
 
 {% endblock conteudo %}
 
 {% block scripts %}
-
-    <!-- //copyright -->
-
-    <!-- js-files -->
-    <!-- jquery -->
-
     <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
     <!-- //jquery -->
     <script src="{% static 'js/pagamento.js' %}"></script>

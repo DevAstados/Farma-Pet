@@ -1975,7 +1975,7 @@
 
             parent: (typeof document !== 'undefined') ? document.body : null,
 
-            action: `${window.location.origin}/`,
+            action: `${window.location.origin}/pedido/checkout/`,
 
             target: '',
 

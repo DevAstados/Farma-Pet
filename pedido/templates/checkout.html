@@ -7,7 +7,7 @@
         <div class="container py-xl-4 py-lg-2">
             <!-- tittle heading -->
             <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
-                <span>C</span>onfirmação de Pedido
+                <span>C</span>arrinho
             </h3>
             <!-- //tittle heading -->
             <div class="checkout-right">
@@ -58,13 +58,12 @@
             <!-- Endereço-->
             <div class="checkout-left">
                 <div class="address_form_agile mt-sm-5 mt-4">
-                    <form method="get" action={% url "pedido:selecionarClienteEndereco" %} class="creditly-card-form
-                          agileinfo_form id="form">
-                        {% csrf_token %}
+                    <form method="get" action="{% url 'pedido:pagar' %}" class="creditly-card-form
+                          agileinfo_form" id="form">
                         <div class="creditly-wrapper wthree, w3_agileits_wrapper">
 
                             <button class="submit check_out btn" type="submit" id="pagamento_pedido"
-                            >Selecionar Cliente e Endereço de Entrega
+                            >Fechar Pedido
                                 <span class="far fa-hand-point-right"></span>
                             </button>
                         </div>

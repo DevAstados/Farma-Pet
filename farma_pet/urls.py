@@ -30,6 +30,7 @@ urlpatterns = [
                   path('social-auth/', include('social_django.urls', namespace='social-auth')),
                   path('administracao/', include('administracao.urls')),
                   path('produto/', include('produto.urls')),
+                  path('pedido/', include('pedido.urls')),
                   path('funcionario/', include('funcionario.urls')),
                   path('usuario/', include('usuario.urls')),
                   path('__debug__/', include(debug_toolbar.urls)),
