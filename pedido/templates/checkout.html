@@ -55,15 +55,14 @@
                     </li>
                 </div>
             </div>
-            <!-- Endereço-->
             <div class="checkout-left">
                 <div class="address_form_agile mt-sm-5 mt-4">
-                    <form method="get" action="{% url 'pedido:pagar' %}" class="creditly-card-form
-                          agileinfo_form" id="form">
+                    <form class="creditly-card-form
+                          agileinfo_form" id="form_pagar">
                         <div class="creditly-wrapper wthree, w3_agileits_wrapper">
 
                             <button class="submit check_out btn" type="submit" id="pagamento_pedido"
-                            >Fechar Pedido
+                            >Pagar
                                 <span class="far fa-hand-point-right"></span>
                             </button>
                         </div>
@@ -119,9 +118,9 @@
                 let descontos = 0;
                 for (let item of items) {
                     count++
-                    descontos += parseFloat(item.discount_amount) * item.quantity
-                    subtotal += item.quantity * item.amount
-                    total += item.quantity * (item.amount - parseFloat(item.discount_amount))
+                    subtotal += item.quantity * (item.amount + item.desconto)
+                    descontos += parseFloat(item.desconto) * item.quantity
+                    total += item.quantity * item.amount
                     html += `
                     <tr class="rem1">
 
@@ -141,9 +140,9 @@
                             </div>
                         </td>
 
+                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * (item.amount + item.desconto)).toFixed(2)}</td>
+                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * parseFloat(item.desconto)).toFixed(2)}</td>
                         <td class="invert" id="price-${item.id}">R$ ${(item.quantity * item.amount).toFixed(2)}</td>
-                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * parseFloat(item.discount_amount)).toFixed(2)}</td>
-                        <td class="invert" id="price-${item.id}">R$ ${(item.quantity * (item.amount - parseFloat(item.discount_amount))).toFixed(2)}</td>
 
 
 

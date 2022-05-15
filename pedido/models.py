@@ -2,6 +2,8 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from pagseguro.api import PagSeguroItem, PagSeguroApi
+
 from cliente.models import Cliente, Endereco
 from funcionario.models import Funcionario
 from produto.models import Produto
@@ -33,29 +35,25 @@ class Transportadora(models.Model):
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
     total = models.FloatField()
-    forma_pagamento = models.ForeignKey(FormaDePagamento, models.DO_NOTHING)
+    forma_pagamento = models.CharField(max_length=20, blank=True)
     data = models.DateTimeField()
     subtotal = models.FloatField()
+    transaction_code = models.CharField(max_length=100,blank=True, null=True)
     desconto = models.FloatField(default=0.0)
-    frete = models.FloatField(null=True)
     codigo_rastreio = models.CharField(unique=True, max_length=50, blank=True, null=True)
     notal_fiscal = models.CharField(max_length=70, blank=True, null=True)
-    vendedor = models.ForeignKey(Funcionario, on_delete=models.DO_NOTHING)
     endereco_entrega = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING)
-
+    status = models.CharField(max_length=13,default="Aguardando")
     def _str_(self):
         return f' N. {self.pk}.zfill(6)'
 
     @classmethod
-    def criarPedido(cls, cliente, formaDePagamento, vendedor, endereco):
+    def criarPedido(cls, cliente, endereco, formaDePagamento='Pagseguro'):
         pedido = Pedido()
         pedido.data = datetime.today()
-        pedido.frete = 0.0
         pedido.cliente = cliente
         pedido.forma_pagamento = formaDePagamento
-        pedido.vendedor = vendedor
         pedido.endereco_entrega = endereco
-
 
         return pedido
 
@@ -100,8 +98,6 @@ class ItemPedido(models.Model):
     preco_promocional = models.FloatField(default=0)
     quantidade = models.PositiveIntegerField()
     imagem = models.CharField(max_length=250)
-    cor = models.CharField(max_length=50, blank=True, null=True)
-    material = models.CharField(max_length=50, blank=True, null=True)
     largura = models.IntegerField(blank=True, null=True)
     altura = models.IntegerField(blank=True, null=True)
     comprimento = models.IntegerField(blank=True, null=True)
@@ -110,20 +106,16 @@ class ItemPedido(models.Model):
         return f'Item do {self.pedido}'
 
     @classmethod
-    def criarItemPedido(cls, pedido, produto, cor, material, largura, altura, comprimento, imagem,
+    def criarItemPedido(cls, pedido, produto,imagem,
                         preco_promocional=0, quantidade=1):
         item = ItemPedido()
         item.pedido = pedido
         item.produto = produto
-        item.preco = produto.preco_marketing
-        item.preco_promocional = produto.preco_marketing_promocional
+        item.preco = produto.preco
+        item.preco_promocional = produto.preco_promocional
         item.quantidade = quantidade
         item.imagem = imagem
-        item.cor = cor
-        item.material = material
-        item.largura = largura if largura == None else 0
-        item.altura = altura if altura == None else 0
-        item.comprimento = comprimento if comprimento == None else 0
+
         return item
 
     @classmethod
@@ -132,10 +124,23 @@ class ItemPedido(models.Model):
         for item in reqJson:
             produto = Produto.objects.get(id=item['id'])
             itens.append(
-                ItemPedido.criarItemPedido(pedido=pedido, produto=produto, cor=item['cor'], material=item['material'],
-                                           largura=item['largura'], altura=item['altura'],
-                                           comprimento=item['comprimento'], imagem=item['imagem'],
+                ItemPedido.criarItemPedido(pedido=pedido, produto=produto,
+                                           imagem=item['imagem'],
                                            quantidade=item['quantity']))
+
+        return itens
+
+    @classmethod
+    def criarListItensPedidoPag(cls, produtos):
+        pagseguro_api = PagSeguroApi()
+        pagseguro_api
+        for item in produtos:
+            produto = Produto.objects.get(id=item['id'])
+            if produto.preco_promocional:
+                pagseguro_api.add_item(
+                    PagSeguroItem(id=f'{produto.id}'.zfill(4), description=produto.nome, amount=produto.preco_promocional,
+                                  quantity=item['quantity']))
+        return pagseguro_api
 
         return itens
 

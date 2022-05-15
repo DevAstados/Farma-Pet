@@ -104,6 +104,17 @@ class Produto(models.Model):
             return self.preco - self.preco_promocional
 
     @classmethod
+    def verificarEstoque(cls, produtos):
+        produtoSemEstoque = {}
+        for produto in produtos:
+            prod = Produto.objects.all().get(id=produto['id'])
+            if not prod.quantidade >= produto['quantity']:
+                produtoSemEstoque[prod.nome] = {'quantidade_estoque': prod.quantidade,
+                                                'quantidade_compra': produto['quantity']}
+        return produtoSemEstoque
+
+
+    @classmethod
     def popular(cls, json, categoria=None, marca=None, especificacoes=None):
         produto = Produto()
 

@@ -26,7 +26,7 @@ function pagar(element) {
 
     const headers = new Headers({
         'X-CSRFToken': data.csrfmiddlewaretoken,
-        'Acces-Control-Allow-Origin': 'https://sandbox.pagseguro.uol.com.br',
+        'Acces-Control-Allow-Origin': '*',
         'content-type': 'application/json',
     });
 
@@ -37,13 +37,17 @@ function pagar(element) {
         mode: 'cors',
         body: JSON.stringify(data)
     }).then(res => {
-         if (res.status == 200 && res.redirected) {
+        if (res.status == 200 ) {
+            dat = res.json()
+            window.open(res.urle + '/', '_blank').focus();
+            console.log(url + '/')
             paypals.minicarts.reset()
+
             window.location.href = `${res.url}`
         } else {
             $(".messages").load(location.href + " .messages")
         }
-    }).catch(error => console.log('Request failed:', error))
+    }).then(data=>{ console.log(data); }).catch(error => console.log('Request failed:', error))
 
 
 }

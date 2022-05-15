@@ -86,8 +86,8 @@
                                                     </h4>
                                                     <div class="info-product-price my-2">
 
-                                                        {% if produto.preo_promocional %}
-                                                            <span class="item_price">{{ produto.preo_promocional|formata_preco }}</span>
+                                                        {% if produto.preco_promocional %}
+                                                            <span class="item_price">{{ produto.preco_promocional|formata_preco }}</span>
                                                             <del>
                                                                 R$ {{ produto.preco|formata_preco }}</del>
                                                         {% else %}
@@ -113,7 +113,7 @@
                                                                     <input type="hidden" name="amount"
                                                                            value="{{ produto.preco_promocional }}"/>
 
-                                                                    <input type="hidden" name="amount"
+                                                                    <input type="hidden" name="desconto"
                                                                            value="{{ produto.getDesconto }}"/>
 
                                                                 {% else %}
