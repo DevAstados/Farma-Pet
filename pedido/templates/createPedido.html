@@ -40,7 +40,7 @@
                                     </div>
                                 </td>
 
-                                <td class="invert">R$ {{ item.preco|formata_preco }}</td>
+                                <td class="invert"> {{ item.preco|formata_preco }}</td>
                             </tr>
                         {% endfor %}
 
@@ -56,7 +56,7 @@
             </li>
 
             <li class="font-weight-bold list-group-item bg-light">Total
-                <span class="float-right">R$ {{ pedido.total|formata_preco }}</span>
+                <span class="float-right">{{ pedido.total|formata_preco }}</span>
             </li>
             </ul>
 

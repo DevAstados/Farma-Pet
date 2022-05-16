@@ -43,7 +43,7 @@ class Pedido(models.Model):
     codigo_rastreio = models.CharField(unique=True, max_length=50, blank=True, null=True)
     notal_fiscal = models.CharField(max_length=70, blank=True, null=True)
     endereco_entrega = models.ForeignKey(Endereco, on_delete=models.DO_NOTHING)
-    status = models.CharField(max_length=13,default="Aguardando")
+    status = models.CharField(max_length=50,default="Aguardando")
     def _str_(self):
         return f' N. {self.pk}.zfill(6)'
 

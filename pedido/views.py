@@ -35,14 +35,37 @@ class resumo(View):
 
         endereco = Endereco.getEndereco(pedido)
         context = {}
-        context['categorias'] = Categoria.objects.all().order_by('nome')
+        context['categorias'] = Categoria.objects.all().order_by('nome')[0:4]
         context['items'] = itens
         context['pedido'] = pedido
         context['endereco'] = endereco
-        pagseguro = PagSeguroApi()
-        context['status_pagamento'] = pagseguro.get_notification()
+        self.get_status(pedido=pedido, transaction_cod='5300EAA3B3EA454BB007070270A38E46')
+        context['status_pagamento'] = pedido.status
         return render(request, template_name, context)
 
+    def get_status(self, pedido, transaction_cod):
+        pagseguro = PagSeguroApi()
+        transaction = pagseguro.get_transaction(transaction_cod)
+        transaction = transaction['transaction']
+
+        if not pedido.transaction_code:
+            pedido.transaction_code = transaction_cod
+
+        if transaction['status'] == '1':
+            pedido.status = 'Aguardando pagamento'
+        elif transaction['status'] == '2':
+            pedido.status = 'Em análise'
+        elif transaction['status'] == '3':
+            pedido.status = 'Paga'
+        elif transaction['status'] == '4':
+            pedido.status = 'Disponível'
+        elif transaction['status'] == '5':
+            pedido.status = 'Em disputa'
+        elif transaction['status'] == '6':
+            pedido.status = 'Devolvida'
+        elif transaction['status'] == '7':
+            pedido.status = 'Cancelada'
+        pedido.save()
 
 class pagar(View):
 
@@ -57,8 +80,6 @@ class pagar(View):
 
         pagseguro_api = ItemPedido.criarListItensPedidoPag(produtos=requestJson['cart'])
         data = pagseguro_api.checkout()
-
-        pedido.transaction_code = data['code']
         pedido.save()
         Pedido.baixaEstoque(itens)
         for item in itens:
