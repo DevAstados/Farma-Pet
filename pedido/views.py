@@ -15,11 +15,13 @@ from produto.models import Categoria, Produto
 from pagseguro.api import PagSeguroItem, PagSeguroApi
 from selenium import webdriver
 
+from utils.enviar_email import sending_pedido
+
 
 class checkout(View):
     def post(self, request, *args, **kwargs):
         context = {}
-        context['categorias'] = Categoria.objects.all().order_by('nome')
+        context['categorias'] = Categoria.objects.all().order_by('nome')[0:4]
         return render(request, 'checkout.html', context)
 
 
@@ -39,13 +41,14 @@ class resumo(View):
         context['items'] = itens
         context['pedido'] = pedido
         context['endereco'] = endereco
-        self.get_status(pedido=pedido, transaction_cod='5300EAA3B3EA454BB007070270A38E46')
+        self.get_status(pedido=pedido, transaction_cod='78867D84A85242839AE62C9D049DBCF4')
         context['status_pagamento'] = pedido.status
         return render(request, template_name, context)
 
     def get_status(self, pedido, transaction_cod):
         pagseguro = PagSeguroApi()
         transaction = pagseguro.get_transaction(transaction_cod)
+        time.sleep(2)
         transaction = transaction['transaction']
 
         if not pedido.transaction_code:
@@ -85,10 +88,10 @@ class pagar(View):
         for item in itens:
             ItemPedido.save(item)
         url = reverse('pedido:resumo', kwargs={'id': pedido.id})
-
+        sending_pedido(pedido,itens)
         print(data['redirect_url'])
-        driver = webdriver.Chrome(ChromeDriverManager().install())
-        driver.execute_script("window.open('" + data['redirect_url'] + "', '_blank')")
-        driver.switch_to.window(driver.window_handles[1])
+        #driver = webdriver.Chrome(ChromeDriverManager().install())
+        #driver.execute_script("window.open('" + data['redirect_url'] + "', '_blank')")
+        #driver.switch_to.window(driver.window_handles[1])
 
         return HttpResponseRedirect(url)

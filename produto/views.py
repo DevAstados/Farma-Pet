@@ -15,13 +15,17 @@ class home(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if 'categoria' in self.kwargs :
-            context['categoria'] = get_object_or_404(Categoria, nome=self.kwargs['categoria'])
-            context['produtos'] = Produto.getListProdutInColun(categoria=context['categoria'])
+        context['pesquisa_produto'] = self.request.GET.get('nome')
+        if 'categoria' in self.kwargs:
+            context['categoria'] = get_object_or_404(Categoria,nome=self.kwargs['categoria'])
+            context['produtos'] = Produto.getListProdutInColun(categoria=context['categoria'], nome_produto=context['pesquisa_produto'])
         else:
-            context['produtos'] = Produto.getListProdutInColun()
+            context['produtos'] = Produto.getListProdutInColun( nome_produto=context['pesquisa_produto'])
+
+        context['qtd_product'] = len(context['produtos']) if context['produtos'] != None else 0
 
         context['categorias'] = Categoria.objects.all().order_by('nome')[0:4]
+
         return context
 
 

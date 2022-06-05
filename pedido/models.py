@@ -142,7 +142,7 @@ class ItemPedido(models.Model):
                                   quantity=item['quantity']))
         return pagseguro_api
 
-        return itens
+
 
     @classmethod
     def getItensPedido(cls, pedido_id):

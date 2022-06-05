@@ -71,3 +71,14 @@ class CustomUser(AbstractUser):
         usuario.tipo_usuario = tipo_usuario
 
         return  usuario
+
+    @classmethod
+    def popularalteracao(cls,json,usuario):
+        if( json['login']):
+            usuario.username = json['login']
+        if (json['email']):
+            usuario.email = json['email']
+        if (json['senha']):
+            usuario.set_password(json['senha'])
+
+        return  usuario

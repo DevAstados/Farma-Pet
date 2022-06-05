@@ -6,6 +6,8 @@ from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import utils.utilsProduto
+from cliente.models import Endereco
 from .Google import Create_Service
 
 from django.shortcuts import render
@@ -18,6 +20,20 @@ API_NAME = 'gmail'
 API_VERSION = 'v1'
 SCOPES = ['https://mail.google.com/']
 NAME_SITE = 'Farma Pet'
+
+
+def sending_pedido(pedido,item):
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    endereco = Endereco.getEndereco(pedido)
+    emailMsg = render_to_string('modelo_email.html', {'pedido': pedido, 'items': item ,'endereco': endereco})
+    mimeMessage = MIMEMultipart()
+    mimeMessage['to'] = pedido.cliente.email
+    mimeMessage['subject'] = 'Pedido realizado com sucesso ' + utils.utilsProduto.formata_numero_pedido(pedido.pk)
+    mimeMessage.attach(MIMEText(emailMsg, 'html'))
+    raw_string = base64.urlsafe_b64encode(mimeMessage.as_bytes()).decode()
+
+    message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
+    print(message)
 
 
 def sending(email):

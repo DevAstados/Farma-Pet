@@ -1,11 +1,15 @@
 import json
 
 from django.contrib import auth
+from django.contrib.auth import authenticate
+from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView
 
@@ -13,6 +17,32 @@ from funcionario.models import Funcionario
 from produto.forms import FormProduto
 from produto.models import Produto, Categoria, Marca, Especificacoes
 from usuario.models import CustomUser
+
+
+class login(View):
+
+    def get(self, request, *args, **kwargs):
+        template_name = 'login_funcionario.html'
+
+        return render(request, template_name)
+
+    def post(self, request, *args, **kwargs):
+        requestJson = json.dumps(request.POST, separators=(',', ':'))
+        requestJson = json.loads(requestJson)
+
+        usuario = CustomUser(email=requestJson['username'])
+        usuario.set_password(requestJson['password'])
+        usuario = authenticate(email=usuario.email, password=requestJson['password'])
+        if not usuario:
+            messages.add_message(request, messages.ERROR, "Usuário ou senha incorreto")
+
+            return redirect(request.path_info)
+        elif usuario.tipo_usuario == 'C':
+            messages.add_message(request, messages.ERROR, "Usuário não é um funcionario")
+            return redirect(request.path_info)
+
+        auth.login(request, user=usuario)
+        return redirect(reverse_lazy('adm:administracao'))
 
 
 class listagem_produto(ListView):
@@ -71,8 +101,6 @@ class listagem_pedido(ListView):
         return context
 
 
-
-
 class adicionar_produto(CreateView):
     template_name = 'adicionar_produto.html'
 
@@ -104,7 +132,8 @@ class adicionar_produto(CreateView):
 
         produto = Produto.popular(requestJson, categoria, marca, especificacoes).save()
 
-        return redirect('listagem_produto')
+        return redirect('adm:listagem_produto')
+
 
 class adicionar_funcionario(CreateView):
     template_name = 'adicionar_funcionario.html'
@@ -118,10 +147,10 @@ class adicionar_funcionario(CreateView):
     def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
-        #usuario = Usuario.popular(requestJson)
+        usuario = CustomUser.popular(requestJson, tipo_usuario='F')
 
-        funcionario = Funcionario.popular(requestJson,usuario=None)
-        #Usuario.save(usuario)
+        funcionario = Funcionario.popular(requestJson, usuario=usuario)
+        usuario.save()
         Funcionario.save(funcionario)
 
         return redirect('adm:listagem_funcionario')
@@ -138,20 +167,21 @@ class update_produto(View):
         context['categorias'] = Categoria.objects.all()
         context['marcas'] = Marca.objects.all()
         return render(request, template_name, context=context)
-    def post(self, request, *args, **kwargs):
 
+    def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
 
         produto = get_object_or_404(Produto, pk=self.kwargs['id'])
         especificacoes = get_object_or_404(Especificacoes, pk=produto.especificacoes.pk)
 
-        especificacoes = Especificacoes.popular_alterar(requestJson,especificacoes)
-        produto = Produto.popular_alterar(requestJson,produto)
+        especificacoes = Especificacoes.popular_alterar(requestJson, especificacoes)
+        produto = Produto.popular_alterar(requestJson, produto)
         Especificacoes.save(especificacoes)
         Produto.save(produto)
 
         return redirect('listagem_produto')
+
 
 class update_funcionario(View):
 
@@ -161,6 +191,7 @@ class update_funcionario(View):
         context['funcionario'] = get_object_or_404(Funcionario, pk=self.kwargs['id'])
 
         return render(request, template_name, context=context)
+
     def post(self, request, *args, **kwargs):
         requestJson = json.dumps(request.POST, separators=(',', ':'))
         requestJson = json.loads(requestJson)
@@ -169,11 +200,11 @@ class update_funcionario(View):
         usuario = get_object_or_404(CustomUser, pk=funcionario.usuario.pk)
 
         funcionario = Funcionario.popularAlteracao(requestJson, funcionario)
-        #usuario = CustomUser.popularalteracao(requestJson,usuario)
-        #Usuario.save(usuario)
+        usuario = CustomUser.popularalteracao(requestJson,usuario)
+        usuario.save()
         Funcionario.save(funcionario)
 
-        return redirect('listagem_funcionario')
+        return redirect('adm:listagem_funcionario')
 
 
 def administracao(request):
@@ -186,7 +217,8 @@ def administracao(request):
 def excluirProduto(request, id):
     if request.method == 'GET':
         get_object_or_404(Produto, pk=id).delete()
-        return redirect('listagem_produto')
+        return redirect('adm:listagem_produto')
+
 
 def excluirFuncionario(request, id):
     if request.method == 'GET':
@@ -195,16 +227,15 @@ def excluirFuncionario(request, id):
 
         funcionario.delete()
         usuario.delete()
-        return redirect('listagem_funcionario')
+        return redirect('adm:listagem_funcionario')
 
-def login(request):
-    print('teste')
 
 def cadastrado_google(request):
     print(request.user.password)
+
 
 def Logout(request):
     if request.method == 'GET':
         auth.logout(request)
 
-        return redirect('..')
+        return redirect('adm:login')

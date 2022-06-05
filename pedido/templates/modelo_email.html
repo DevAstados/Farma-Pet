@@ -303,7 +303,7 @@
                                                             <td class="es-m-txt-c" align="left"
                                                                 style="padding:0;Margin:0"><h1
                                                                     style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:36px;font-style:normal;font-weight:bold;color:#ffffff">
-                                                                Silpan</h1></td>
+                                                                Farma Pet</h1></td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -498,13 +498,13 @@
                                                                                 <td style="padding:5px 0;Margin:0"
                                                                                     width="20%" align="left"><p
                                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">
-                                                                                    R${{ item.preco_promocional|formata_preco }}</p>
+                                                                                    {{ item.preco_promocional|formata_preco }}</p>
                                                                                 </td>
                                                                             {% else %}
                                                                                 <td style="padding:5px 0;Margin:0"
                                                                                     width="20%" align="left"><p
                                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;font-size:16px">
-                                                                                    R${{ item.preco|formata_preco }}</p>
+                                                                                    {{ item.preco|formata_preco }}</p>
                                                                                 </td>
                                                                             {% endif %}
 
@@ -543,7 +543,7 @@
                                                                             SUBTOTAL</h4></td>
                                                                         <td width="20%" style="padding:0;Margin:0"><h4
                                                                                 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif">
-                                                                            R${{ pedido.subtotal|formata_preco_total }}</h4>
+                                                                            {{ pedido.subtotal|formata_preco }}</h4>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -562,7 +562,7 @@
                                                                             DESCONTO</h4></td>
                                                                         <td width="20%" style="padding:0;Margin:0"><h4
                                                                                 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif">
-                                                                            R${{ pedido.desconto|formata_preco_total }}</h4>
+                                                                            {{ pedido.desconto|formata_preco }}</h4>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -581,7 +581,7 @@
                                                                             TOTAL</h4></td>
                                                                         <td width="20%" style="padding:0;Margin:0"><h4
                                                                                 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif">
-                                                                            R${{ pedido.total|formata_preco_total }}</h4>
+                                                                            {{ pedido.total|formata_preco  }}</h4>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
