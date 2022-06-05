@@ -13,9 +13,10 @@ import os
 from pathlib import Path
 
 # Used by SettingsBackend
+import dj_database_url
+
 ADMIN_LOGIN = 'admin'
 ADMIN_PASSWORD = 'pbkdf2_sha256$36000$9pA3fTzM4yL9$whatever'
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ SECRET_KEY = 'django-insecure-t^+bf=$n*cq+r^c@nhdmu#y5bbc_leu@g^9w(s6hzs4b#m7@k6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['farmapet.herokuapp.com']
 
 # Application definition
 
@@ -73,7 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-'social_django.middleware.SocialAuthExceptionMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 
 ]
 
@@ -116,8 +117,8 @@ SOCIAL_AUTH_USER_MODEL = 'usuario.CustomUser'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '764702572075-003se1mn0fldlv2tmrqmj8a67a2dlvhp.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-'https://www.googleapis.com/auth/userinfo.email',
-'https://www.googleapis.com/auth/userinfo.profile'
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
 ]
 
 WSGI_APPLICATION = 'farma_pet.wsgi.application'
@@ -125,15 +126,12 @@ WSGI_APPLICATION = 'farma_pet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+DATABASE_URL = os.getenv("JAWSDB_MARIA_URL")
+db_from_env = dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'farma_pet2',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',  # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-    }
+    'default': db_from_env
+
 }
 
 # Password validation
@@ -169,11 +167,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'templates/static')
 ]
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -183,5 +183,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RECAPTCHA_PUBLIC_KEY = '<Sua PUBLIC_KEY>'
-RECAPTCHA_PRIVATE_KEY = '<Sua PRIVATE_KEY> '
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+
+PAGSEGURO_EMAIL = os.getenv("PAGSEGURO_EMAIL")
+PAGSEGURO_TOKEN = os.getenv("PAGSEGURO_TOKEN")
+PAGSEGURO_SANDBOX = os.getenv("PAGSEGURO_SANDBOX")
+PAGSEGURO_APP_ID_SANDBOX = os.getenv("PAGSEGURO_APP_ID_SANDBOX")
+PAGSEGURO_APP_KEY_SANDBOX = os.getenv("PAGSEGURO_APP_KEY_SANDBOX")
+PAGSEGURO_LOG_IN_MODEL = os.getenv("PAGSEGURO_LOG_IN_MODEL")
+
+import django_heroku
+
+django_heroku.settings(locals())

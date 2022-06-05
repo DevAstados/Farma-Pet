@@ -9,11 +9,13 @@ cffi==1.15.0
 charset-normalizer==2.0.12
 cryptography==36.0.2
 defusedxml==0.7.1
+dj-database-url==0.5.0
 Django==4.0.3
 django-autoslug==1.9.8
 django-cors-headers==3.12.0
 django-crispy-forms==1.14.0
 django-debug-toolbar==3.2.4
+django-heroku==0.3.1
 django-nocaptcha-recaptcha==0.0.20
 django-pagseguro2==3.0.0
 django-recaptcha==3.0.0
@@ -37,6 +39,7 @@ outcome==1.1.0
 Pillow==9.0.1
 platformdirs==2.5.1
 protobuf==3.20.0
+psycopg2==2.9.3
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycep-correios==5.0.0
@@ -68,6 +71,7 @@ uritemplate==4.1.1
 urllib3==1.26.9
 waitress==2.1.2
 webdriver-manager==3.5.4
+whitenoise==6.2.0
 wsproto==1.1.0
 xmltodict==0.13.0
 zeep==4.1.0
