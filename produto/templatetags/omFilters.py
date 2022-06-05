@@ -9,8 +9,14 @@ def formata_preco(val):
     return utilsProduto.formata_preco(val)
 
 @register.filter
+def formata_data(val):
+    return utilsProduto.formata_data(val)
+
+@register.filter
 def formata_preco_total(val):
     return utilsProduto.formata_preco_total(val)
+
+
 
 
 @register.filter

@@ -14,6 +14,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView
 
 from funcionario.models import Funcionario
+from pedido.models import Pedido
 from produto.forms import FormProduto
 from produto.models import Produto, Categoria, Marca, Especificacoes
 from usuario.models import CustomUser
@@ -91,9 +92,9 @@ class listagem_pedido(ListView):
     template_name = 'listagem_pedido.html'
 
     def get_queryset(self):
-        self.produtos = Produto.objects.all()
+        self.Pedido = Pedido.objects.all()
 
-        return self.produtos
+        return self.Pedido
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

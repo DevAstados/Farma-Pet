@@ -11,6 +11,11 @@
             </h3>
             <!-- //tittle heading -->
             <div class="checkout-right">
+                <div class="messages" style="color: red; text-align: center">
+                    {% for message in messages %}
+                        <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a><br>
+                    {% endfor %}
+                </div>
                 <h4 class="mb-sm-4 mb-3">Seu carrinho de compras contém:
                     <span><label id="contagem_produto"></label> Itens</span>
 
@@ -27,6 +32,7 @@
 
                     </script>
                 </h4>
+
                 <div class="table-responsive" id="table-products">
                     <table class="timetable_sub">
                         <thead>

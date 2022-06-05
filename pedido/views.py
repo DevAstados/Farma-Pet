@@ -1,6 +1,7 @@
 import json
 import time
 
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 
@@ -81,17 +82,31 @@ class pagar(View):
         itens = ItemPedido.criarListItensPedido(pedido=pedido, reqJson=requestJson['cart'])
         pedido.subtotal, pedido.total, pedido.desconto = Pedido.calcularCaixa(itens)
 
-        pagseguro_api = ItemPedido.criarListItensPedidoPag(produtos=requestJson['cart'])
-        data = pagseguro_api.checkout()
-        pedido.save()
-        Pedido.baixaEstoque(itens)
-        for item in itens:
-            ItemPedido.save(item)
-        url = reverse('pedido:resumo', kwargs={'id': pedido.id})
-        sending_pedido(pedido,itens)
-        print(data['redirect_url'])
-        #driver = webdriver.Chrome(ChromeDriverManager().install())
-        #driver.execute_script("window.open('" + data['redirect_url'] + "', '_blank')")
-        #driver.switch_to.window(driver.window_handles[1])
+        estoqueProduto = Produto.verificarEstoque(produtos=itens)
+        if not estoqueProduto:
+            pagseguro_api = ItemPedido.criarListItensPedidoPag(produtos=requestJson['cart'])
+            data = pagseguro_api.checkout()
 
-        return HttpResponseRedirect(url)
+            pedido.save()
+            Pedido.baixaEstoque(itens)
+            for item in itens:
+                ItemPedido.save(item)
+            url = reverse('pedido:resumo', kwargs={'id': pedido.id})
+            sending_pedido(pedido,itens)
+            print(data['redirect_url'])
+            #driver = webdriver.Chrome(ChromeDriverManager().install())
+            #driver.execute_script("window.open('" + data['redirect_url'] + "', '_blank')")
+            #driver.switch_to.window(driver.window_handles[1])
+            return HttpResponseRedirect(url)
+
+        else:
+            for estoprod in estoqueProduto:
+                if estoqueProduto[estoprod]["quantidade_estoque"] == 0:
+                    messages.add_message(request, messages.WARNING,
+                                         f'Produto {estoprod} está fora do estoque ')
+                else:
+                    messages.add_message(request, messages.WARNING,
+                                         f'Produto {estoprod} tem somente {estoqueProduto[estoprod]["quantidade_estoque"]} ')
+            return redirect(request.path_info)
+
+

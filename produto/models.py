@@ -107,10 +107,10 @@ class Produto(models.Model):
     def verificarEstoque(cls, produtos):
         produtoSemEstoque = {}
         for produto in produtos:
-            prod = Produto.objects.all().get(id=produto['id'])
-            if not prod.quantidade >= produto['quantity']:
+            prod = Produto.objects.all().get(id=produto.produto.id)
+            if not prod.quantidade >= produto.quantidade:
                 produtoSemEstoque[prod.nome] = {'quantidade_estoque': prod.quantidade,
-                                                'quantidade_compra': produto['quantity']}
+                                                'quantidade_compra': produto.quantidade}
         return produtoSemEstoque
 
 
